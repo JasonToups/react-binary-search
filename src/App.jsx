@@ -131,11 +131,6 @@ function App() {
       const six = getCenter(sixRef.current);
       const seven = getCenter(sevenRef.current);
 
-      console.log('Container dimensions:', containerRect.width, containerRect.height);
-      console.log('Tree dimensions:', treeRect.width, treeRect.height);
-      console.log('Tree offset:', treeOffsetX, treeOffsetY);
-      console.log('Node positions:', { one, two, three, four, five, six, seven });
-
       setLines([
         // Root connections
         { x1: one.x, y1: one.y, x2: two.x, y2: two.y },
@@ -263,15 +258,7 @@ function App() {
             {/* SVG container positioned behind the tree */}
             <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
               {lines.map((line, i) => (
-                <line
-                  key={i}
-                  x1={line.x1}
-                  y1={line.y1}
-                  x2={line.x2}
-                  y2={line.y2}
-                  stroke="blue"
-                  strokeWidth="2"
-                />
+                <line key={i} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} />
               ))}
             </svg>
 
