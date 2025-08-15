@@ -151,16 +151,33 @@ function App() {
   };
 
   const updateNodes = (results) => {
-    if (results.length === 0) return;
-    const activeNode = results[0];
-    const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
-    if (activeNodeElement) {
-      activeNodeElement.classList.add('active');
-      setTimeout(() => {
-        activeNodeElement.classList.remove('active');
-        activeNodeElement.classList.add('passive');
-      }, 1000);
+    console.log('updateNodes called with:', results);
+
+    if (results.length === 0) {
+      console.log('No results, returning early');
+      return;
     }
+
+    results.forEach((result) => {
+      const activeNode = result;
+      console.log('Active node:', activeNode);
+
+      const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
+      console.log('Found element:', activeNodeElement);
+
+      if (activeNodeElement) {
+        console.log('Adding active class to:', activeNodeElement);
+        activeNodeElement.classList.add('active');
+
+        setTimeout(() => {
+          console.log('Removing active class and adding passive to:', activeNodeElement);
+          activeNodeElement.classList.remove('active');
+          activeNodeElement.classList.add('passive');
+        }, 10000);
+      } else {
+        console.log('No element found for node:', activeNode);
+      }
+    });
   };
 
   useEffect(() => {
@@ -218,12 +235,12 @@ function App() {
           {/* Tree nodes positioned on top */}
           <div className="binary-tree">
             <div>
-              <p ref={oneRef} className="passive" data-value="47">
+              <p ref={oneRef} data-value="47">
                 47
               </p>
             </div>
             <div>
-              <p ref={twoRef} className="active" data-value="21">
+              <p ref={twoRef} data-value="21">
                 21
               </p>
             </div>
