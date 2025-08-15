@@ -176,19 +176,22 @@ function App() {
       console.log('Processing node:', activeNode);
 
       const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
+      const activeResultsElement = document.querySelector(`span[data-value="${activeNode}"]`);
       console.log('Found element:', activeNodeElement);
 
       if (activeNodeElement) {
         // Add active class
         console.log('Adding active class to:', activeNodeElement);
         activeNodeElement.classList.add('active');
+        activeResultsElement.classList.add('active');
 
         // Wait 3 seconds while active, then process next node
         setTimeout(() => {
           console.log('Removing active class and adding passive to:', activeNodeElement);
-          activeNodeElement.classList.remove('active');
           activeNodeElement.classList.add('passive');
-
+          activeResultsElement.classList.add('passive');
+          activeNodeElement.classList.remove('active');
+          activeResultsElement.classList.remove('active');
           // Wait 1 second, then process next node
           setTimeout(() => {
             currentIndex++;
@@ -245,7 +248,7 @@ function App() {
         <aside>An Exporation of Binary Search Operations</aside>
       </header>
       <main>
-        <section>
+        <div className="content-container">
           <div className="card">
             <h2>Show the results of a Breadth First Search</h2>
             <div className="button-container">
@@ -255,65 +258,81 @@ function App() {
               </button>
             </div>
           </div>
-        </section>
-        <section className="binary-tree-container" ref={containerRef}>
-          {/* SVG container positioned behind the tree */}
-          <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            {lines.map((line, i) => (
-              <line
-                key={i}
-                x1={line.x1}
-                y1={line.y1}
-                x2={line.x2}
-                y2={line.y2}
-                stroke="blue"
-                strokeWidth="2"
-              />
-            ))}
-          </svg>
 
-          {/* Tree nodes positioned on top */}
-          <div className="binary-tree">
-            <div>
-              <p className="node" ref={oneRef} data-value="47">
-                47
-              </p>
+          <section className="binary-tree-container" ref={containerRef}>
+            {/* SVG container positioned behind the tree */}
+            <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+              {lines.map((line, i) => (
+                <line
+                  key={i}
+                  x1={line.x1}
+                  y1={line.y1}
+                  x2={line.x2}
+                  y2={line.y2}
+                  stroke="blue"
+                  strokeWidth="2"
+                />
+              ))}
+            </svg>
+
+            {/* Tree nodes positioned on top */}
+            <div className="binary-tree">
+              <div>
+                <p className="node" ref={oneRef} data-value="47">
+                  47
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={twoRef} data-value="21">
+                  21
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={threeRef} data-value="76">
+                  76
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={fourRef} data-value="18">
+                  18
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={fiveRef} data-value="27">
+                  27
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={sixRef} data-value="52">
+                  52
+                </p>
+              </div>
+              <div>
+                <p className="node" ref={sevenRef} data-value="82">
+                  82
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="node" ref={twoRef} data-value="21">
-                21
-              </p>
-            </div>
-            <div>
-              <p className="node" ref={threeRef} data-value="76">
-                76
-              </p>
-            </div>
-            <div>
-              <p className="node" ref={fourRef} data-value="18">
-                18
-              </p>
-            </div>
-            <div>
-              <p className="node" ref={fiveRef} data-value="27">
-                27
-              </p>
-            </div>
-            <div>
-              <p className="node" ref={sixRef} data-value="52">
-                52
-              </p>
-            </div>
-            <div>
-              <p className="node" ref={sevenRef} data-value="82">
-                82
-              </p>
-            </div>
-          </div>
-        </section>
-        <section>
-          {results.length > 0 ? <code>[{results.join(', ')}]</code> : <p>No results yet</p>}
-        </section>
+          </section>
+          <section className="results-container">
+            {results.length > 0 ? (
+              <code className="code-container">
+                [
+                {results.map((result, index) => (
+                  <>
+                    <span key={index} data-value={result} className="result">
+                      {result}
+                    </span>
+                    {index < results.length - 1 ? ', ' : ''}
+                  </>
+                ))}
+                ]
+              </code>
+            ) : (
+              <p>No results yet</p>
+            )}
+          </section>
+        </div>
       </main>
       <footer>by: Jason Toups</footer>
     </div>
