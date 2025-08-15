@@ -70,6 +70,22 @@ class BST {
     }
     return results;
   }
+  // Depth First Search
+  DFSPreOrder() {
+    let currentNode = this.root;
+    let queue = [];
+    let results = [];
+    if (!currentNode) return results;
+    queue.push(currentNode);
+
+    while (queue.length) {
+      currentNode = queue.shift();
+      results.push(currentNode.value);
+      if (currentNode.left) queue.push(currentNode.left);
+      if (currentNode.right) queue.push(currentNode.right);
+    }
+    return results;
+  }
 }
 
 // Create your Tree
@@ -154,13 +170,6 @@ function App() {
   };
 
   const updateNodes = (results) => {
-    console.log('updateNodes called with:', results);
-
-    if (results.length === 0) {
-      console.log('No results, returning early');
-      return;
-    }
-
     let currentIndex = 0;
     let timeout = 2000;
 
@@ -168,21 +177,17 @@ function App() {
       if (currentIndex >= results.length) return;
 
       const activeNode = results[currentIndex];
-      console.log('Processing node:', activeNode);
 
       const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
       const activeResultsElement = document.querySelector(`span[data-value="${activeNode}"]`);
-      console.log('Found element:', activeNodeElement);
 
       if (activeNodeElement) {
         // Add active class
-        console.log('Adding active class to:', activeNodeElement);
         activeNodeElement.classList.add('active');
         activeResultsElement.classList.add('active');
 
         // Wait 3 seconds while active, then process next node
         setTimeout(() => {
-          console.log('Removing active class and adding passive to:', activeNodeElement);
           activeNodeElement.classList.add('passive');
           activeResultsElement.classList.add('passive');
           activeNodeElement.classList.remove('active');
@@ -194,7 +199,6 @@ function App() {
           });
         }, timeout);
       } else {
-        console.log('No element found for node:', activeNode);
         currentIndex++;
         processNextNode();
       }
@@ -245,13 +249,14 @@ function App() {
       <main>
         <div className="content-container">
           <div className="card">
-            <h2>Show the results of a Breadth First Search</h2>
+            <h2>Show the results of Different Search Algorithms</h2>
             <div className="button-container">
-              <button onClick={() => setResults(myTree.BFS())}>BFS</button>
-              <button onClick={() => setResults([])} className="accent">
-                Reset
-              </button>
+              <button onClick={() => setResults(myTree.BFS())}>Breadth First Search</button>
+              {/* <button onClick={() => setResults(myTree.DFS())}>Depth First Search</button> */}
             </div>
+            <button onClick={() => setResults([])} className="accent">
+              Reset
+            </button>
           </div>
 
           <section className="binary-tree-container" ref={containerRef}>
@@ -306,12 +311,10 @@ function App() {
               <code className="code-container">
                 [
                 {results.map((result, index) => (
-                  <>
-                    <span key={index} data-value={result} className="result">
-                      {result}
-                    </span>
+                  <span key={index} data-value={result} className="result">
+                    {result}
                     {index < results.length - 1 ? ', ' : ''}
-                  </>
+                  </span>
                 ))}
                 ]
               </code>
