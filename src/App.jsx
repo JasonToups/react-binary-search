@@ -150,6 +150,14 @@ function App() {
     }
   };
 
+  const resetNodes = () => {
+    const nodes = document.querySelectorAll('.node');
+    nodes.forEach((node) => {
+      node.classList.remove('active');
+      node.classList.remove('passive');
+    });
+  };
+
   const updateNodes = (results) => {
     console.log('updateNodes called with:', results);
 
@@ -158,26 +166,47 @@ function App() {
       return;
     }
 
-    results.forEach((result) => {
-      const activeNode = result;
-      console.log('Active node:', activeNode);
+    let currentIndex = 0;
+    let timeout = 2000;
+
+    const processNextNode = () => {
+      if (currentIndex >= results.length) return;
+
+      const activeNode = results[currentIndex];
+      console.log('Processing node:', activeNode);
 
       const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
       console.log('Found element:', activeNodeElement);
 
       if (activeNodeElement) {
+        // Add active class
         console.log('Adding active class to:', activeNodeElement);
         activeNodeElement.classList.add('active');
 
+        // Wait 3 seconds while active, then process next node
         setTimeout(() => {
           console.log('Removing active class and adding passive to:', activeNodeElement);
           activeNodeElement.classList.remove('active');
           activeNodeElement.classList.add('passive');
-        }, 10000);
+
+          // Wait 1 second, then process next node
+          setTimeout(() => {
+            currentIndex++;
+            processNextNode();
+          });
+        }, timeout);
       } else {
         console.log('No element found for node:', activeNode);
+        currentIndex++;
+        processNextNode();
       }
-    });
+      setTimeout(() => {
+        resetNodes();
+      }, timeout);
+    };
+
+    // Start processing
+    processNextNode();
   };
 
   useEffect(() => {
@@ -216,6 +245,17 @@ function App() {
         <aside>An Exporation of Binary Search Operations</aside>
       </header>
       <main>
+        <section>
+          <div className="card">
+            <h2>Show the results of a Breadth First Search</h2>
+            <div className="button-container">
+              <button onClick={() => setResults(myTree.BFS())}>BFS</button>
+              <button onClick={() => setResults([])} className="accent">
+                Reset
+              </button>
+            </div>
+          </div>
+        </section>
         <section className="binary-tree-container" ref={containerRef}>
           {/* SVG container positioned behind the tree */}
           <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -235,50 +275,39 @@ function App() {
           {/* Tree nodes positioned on top */}
           <div className="binary-tree">
             <div>
-              <p ref={oneRef} data-value="47">
+              <p className="node" ref={oneRef} data-value="47">
                 47
               </p>
             </div>
             <div>
-              <p ref={twoRef} data-value="21">
+              <p className="node" ref={twoRef} data-value="21">
                 21
               </p>
             </div>
             <div>
-              <p ref={threeRef} data-value="76">
+              <p className="node" ref={threeRef} data-value="76">
                 76
               </p>
             </div>
             <div>
-              <p ref={fourRef} data-value="18">
+              <p className="node" ref={fourRef} data-value="18">
                 18
               </p>
             </div>
             <div>
-              <p ref={fiveRef} data-value="27">
+              <p className="node" ref={fiveRef} data-value="27">
                 27
               </p>
             </div>
             <div>
-              <p ref={sixRef} data-value="52">
+              <p className="node" ref={sixRef} data-value="52">
                 52
               </p>
             </div>
             <div>
-              <p ref={sevenRef} data-value="82">
+              <p className="node" ref={sevenRef} data-value="82">
                 82
               </p>
-            </div>
-          </div>
-        </section>
-        <section>
-          <div className="card">
-            <h2>Show the results of a Breadth First Search</h2>
-            <div className="button-container">
-              <button onClick={() => setResults(myTree.BFS())}>BFS</button>
-              <button onClick={() => setResults([])} className="accent">
-                Reset
-              </button>
             </div>
           </div>
         </section>
