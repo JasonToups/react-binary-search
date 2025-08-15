@@ -144,7 +144,7 @@ section {
 /* Update the tree container styles */
 .binary-tree-container {
   position: relative;
-  width: fit-content;
+  width: 100%;
   margin: 1em;
 }
 
@@ -160,7 +160,7 @@ section {
 
 .binary-tree {
   display: grid;
-  width: fit-content;
+  width: 100%;
   gap: 1em;
   margin-bottom: 2.5em;
   position: relative;

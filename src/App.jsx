@@ -114,19 +114,38 @@ function App() {
       };
     }
 
-    if (oneRef.current && twoRef.current && threeRef.current) {
+    if (
+      oneRef.current &&
+      twoRef.current &&
+      threeRef.current &&
+      fourRef.current &&
+      fiveRef.current &&
+      sixRef.current &&
+      sevenRef.current
+    ) {
       const one = getCenter(oneRef.current);
       const two = getCenter(twoRef.current);
       const three = getCenter(threeRef.current);
+      const four = getCenter(fourRef.current);
+      const five = getCenter(fiveRef.current);
+      const six = getCenter(sixRef.current);
+      const seven = getCenter(sevenRef.current);
 
       console.log('Container dimensions:', containerRect.width, containerRect.height);
       console.log('Tree dimensions:', treeRect.width, treeRect.height);
       console.log('Tree offset:', treeOffsetX, treeOffsetY);
-      console.log('Node positions:', { one, two, three });
+      console.log('Node positions:', { one, two, three, four, five, six, seven });
 
       setLines([
+        // Root connections
         { x1: one.x, y1: one.y, x2: two.x, y2: two.y },
         { x1: one.x, y1: one.y, x2: three.x, y2: three.y },
+        // Left subtree connections
+        { x1: two.x, y1: two.y, x2: four.x, y2: four.y },
+        { x1: two.x, y1: two.y, x2: five.x, y2: five.y },
+        // Right subtree connections
+        { x1: three.x, y1: three.y, x2: six.x, y2: six.y },
+        { x1: three.x, y1: three.y, x2: seven.x, y2: seven.y },
       ]);
     }
   };
