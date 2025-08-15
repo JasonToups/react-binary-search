@@ -102,6 +102,10 @@ h2 {
   font-size: 1em;
 }
 
+code {
+  font-size: 2em;
+}
+
 button {
   padding: 0.5em 1em;
   font-size: 1em;
@@ -114,6 +118,18 @@ button {
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   min-width: 120px;
+}
+
+button.accent {
+  background-color: var(--color-accent);
+  color: var(--color-bg-low);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 }
 
 section {

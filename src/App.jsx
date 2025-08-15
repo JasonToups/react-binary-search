@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 class Node {
   constructor(value) {
@@ -150,6 +150,23 @@ function App() {
     }
   };
 
+  const updateNodes = (results) => {
+    if (results.length === 0) return;
+    const activeNode = results[0];
+    const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
+    if (activeNodeElement) {
+      activeNodeElement.classList.add('active');
+      setTimeout(() => {
+        activeNodeElement.classList.remove('active');
+        activeNodeElement.classList.add('passive');
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    updateNodes(results);
+  }, [results]);
+
   useEffect(() => {
     updateLines();
 
@@ -201,36 +218,51 @@ function App() {
           {/* Tree nodes positioned on top */}
           <div className="binary-tree">
             <div>
-              <p ref={oneRef} className="passive">
+              <p ref={oneRef} className="passive" data-value="47">
                 47
               </p>
             </div>
             <div>
-              <p ref={twoRef} className="active">
+              <p ref={twoRef} className="active" data-value="21">
                 21
               </p>
             </div>
             <div>
-              <p ref={threeRef}>76</p>
+              <p ref={threeRef} data-value="76">
+                76
+              </p>
             </div>
             <div>
-              <p ref={fourRef}>18</p>
+              <p ref={fourRef} data-value="18">
+                18
+              </p>
             </div>
             <div>
-              <p ref={fiveRef}>27</p>
+              <p ref={fiveRef} data-value="27">
+                27
+              </p>
             </div>
             <div>
-              <p ref={sixRef}>52</p>
+              <p ref={sixRef} data-value="52">
+                52
+              </p>
             </div>
             <div>
-              <p ref={sevenRef}>82</p>
+              <p ref={sevenRef} data-value="82">
+                82
+              </p>
             </div>
           </div>
         </section>
         <section>
           <div className="card">
             <h2>Show the results of a Breadth First Search</h2>
-            <button onClick={() => setResults(myTree.BFS())}>BFS</button>
+            <div className="button-container">
+              <button onClick={() => setResults(myTree.BFS())}>BFS</button>
+              <button onClick={() => setResults([])} className="accent">
+                Reset
+              </button>
+            </div>
           </div>
         </section>
         <section>
