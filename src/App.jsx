@@ -134,9 +134,14 @@ function Explanation({ algorithm }) {
 
   useEffect(() => {
     if (algorithm === 'BFS') {
-      const newExplanation =
-        'Breadth First Search is a search algorithm that traverses a tree or graph, starting at the root, and exploring all nodes at the current level before moving on to the next level.';
-      setExplanation(newExplanation);
+      setAlgorithmName('Breadth-First Search');
+      setTraverseOrder('(Level by level, left → right within each level)');
+      setExplanation(
+        'Breadth-First Search visits nodes in increasing distance from the start: it processes all nodes at the current depth before moving to the next depth. Implementation uses a FIFO queue; for graphs, also track a visited set to avoid revisiting nodes.'
+      );
+      setUsage(
+        'Use to find the shortest path (in number of edges) in unweighted graphs, check connectivity, and produce level-order listings of a tree (e.g., showing nodes by depth in a UI).'
+      );
     } else if (algorithm === 'DFSPreOrder') {
       setAlgorithmName('Depth-First Search — Pre-Order');
       setTraverseOrder('(Node, Left, Right)');
@@ -348,6 +353,23 @@ function App() {
     };
   }, []);
 
+  const scrollToTreeHeading = () => {
+    const treeHeading = document.querySelector('.binary-tree-container h3');
+    if (treeHeading) {
+      treeHeading.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   const handleSearchType = (type) => {
     // Allow interruption - cancel current and start new
     if (processingResults) {
@@ -356,11 +378,23 @@ function App() {
 
     setSearchType(type);
     setResults(myTree[type]());
+    // Remove the setTimeout - we'll handle scrolling in useEffect
   };
+
+  // Add this useEffect to handle scrolling after results render
+  useEffect(() => {
+    if (results.length > 0 && searchType) {
+      // Results have rendered, now we can scroll
+      setTimeout(() => {
+        scrollToTreeHeading();
+      }, 100); // Small delay to ensure DOM is fully updated
+    }
+  }, [results, searchType]);
 
   const handleReset = () => {
     setResults([]);
-    setSearchType(''); // Clear searchType only when manually resetting
+    setSearchType(''); // This will show the search buttons again
+    scrollToTop();
   };
 
   return (
@@ -371,24 +405,33 @@ function App() {
       </header>
       <main>
         <div className="content-container">
-          <div className="card color-bg-low">
-            <h2>Show the results of Different Search Algorithms</h2>
-            <div className="button-container">
-              <button onClick={() => handleSearchType('BFS')}>Breadth First Search</button>
-              <button className="accent-high" onClick={() => handleSearchType('DFSPreOrder')}>
-                Depth First Search - PreOrder
-              </button>
-              <button className="accent" onClick={() => handleSearchType('DFSPostOrder')}>
-                Depth First Search - PostOrder
-              </button>
-              <button className="accent-low" onClick={() => handleSearchType('DFSInOrder')}>
-                Depth First Search - InOrder
+          {/* Only show search buttons when no algorithm is running */}
+          {!searchType ? (
+            <div className="card color-bg-low">
+              <h2>Show the results of Different Search Algorithms</h2>
+              <div className="button-container">
+                <button onClick={() => handleSearchType('BFS')}>Breadth First Search</button>
+                <button className="accent-high" onClick={() => handleSearchType('DFSPreOrder')}>
+                  Depth First Search - PreOrder
+                </button>
+                <button className="accent" onClick={() => handleSearchType('DFSPostOrder')}>
+                  Depth First Search - PostOrder
+                </button>
+                <button className="accent-low" onClick={() => handleSearchType('DFSInOrder')}>
+                  Depth First Search - InOrder
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* Show current algorithm info instead */
+            <div className="card color-bg-low">
+              <button className="none" onClick={handleReset}>
+                <h2 style={{ marginBottom: 0 }}>{searchType}</h2>
               </button>
             </div>
-          </div>
+          )}
 
           <section className="binary-tree-container" ref={containerRef}>
-            {searchType && <h3>{searchType}</h3>}
             {/* SVG container positioned behind the tree */}
             <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
               {lines.map((line, i) => (
@@ -440,11 +483,7 @@ function App() {
               <section className="results-container card color-bg-high">
                 <div className="results-header">
                   <h3>Results</h3>
-                  <button
-                    className={`cancel ${processingResults ? 'inactive' : ''}`}
-                    onClick={() => setResults([])}>
-                    Reset
-                  </button>
+                  <button onClick={handleReset}>Reset</button>
                 </div>
                 <code className="code-container">
                   [

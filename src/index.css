@@ -174,6 +174,15 @@ button.inactive {
   cursor: not-allowed;
 }
 
+button.none {
+  background-color: unset;
+  border: none;
+  padding: 0;
+  border: unset;
+  border-radius: unset;
+  box-shadow: unset;
+}
+
 code {
   font-size: 1.75em;
 }
@@ -419,12 +428,13 @@ section {
   align-items: flex-start;
   text-align: left;
   padding: 1.5em;
+  line-height: 1.5;
   width: 100%;
+  max-width: 750px;
   height: fit-content;
 }
 
 .instructions aside {
-  font-size: 1.5em;
   color: var(--color-text-light);
 }
 
