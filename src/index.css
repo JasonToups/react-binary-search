@@ -18,7 +18,7 @@
   --color-bg-high: hsl(from var(--base-color) h s 98);
   --color-border: hsl(from var(--base-color) h s 70);
   --color-text-light: hsl(from var(--base-color) h s 45);
-  --color-text-dark: hsl(from var(--base-color) h s 20);
+  --color-text-dark: hsl(from var(--base-color) h s 30);
   --color-primary: var(--base-color);
   --color-primary-dark: hsl(from var(--base-color) h s calc(l - 20));
   --color-primary-light: hsl(from var(--base-color) h s calc(l + 30));
@@ -45,8 +45,6 @@
 }
 
 body {
-  width: 100vw;
-  min-height: 100vh;
   background-color: var(--color-bg-low);
   display: grid;
   place-items: center;
@@ -59,6 +57,7 @@ body {
 
 header {
   height: fit-content;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -82,6 +81,7 @@ aside {
 
 footer {
   height: fit-content;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,7 +125,7 @@ h2 {
   margin-bottom: 1em;
 }
 h3 {
-  font-size: 1.25em;
+  font-size: clamp(1em, 4vw, 1.5em);
   margin-bottom: 0.25em;
 }
 
@@ -251,7 +251,8 @@ section {
   display: grid;
   color: var(--color-text-dark);
   grid-auto-rows: auto 1fr auto;
-  height: 100vh;
+  min-height: 100vh;
+  height: fit-content;
   width: 100vw;
   text-align: center;
 }
@@ -269,7 +270,7 @@ section {
 .binary-tree-container {
   position: relative;
   width: 100%;
-  margin: 1em;
+  margin: 1em 1em 2.5em 1em;
 }
 
 .tree-svg {
@@ -413,18 +414,22 @@ section {
 
 .instructions {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  text-align: left;
   padding: 1.5em;
   width: 100%;
-  height: 100%;
+  height: fit-content;
 }
 
 .instructions aside {
   font-size: 1.5em;
+  color: var(--color-text-light);
 }
 
 .instructions aside span {
   font-weight: light;
   font-style: italic;
+  color: var(--color-text-dark);
 }

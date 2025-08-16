@@ -126,6 +126,72 @@ myTree.insert(27);
 myTree.insert(52);
 myTree.insert(82);
 
+function Explanation({ algorithm }) {
+  const [algorithmName, setAlgorithmName] = useState('');
+  const [traverseOrder, setTraverseOrder] = useState('');
+  const [explanation, setExplanation] = useState('');
+  const [usage, setUsage] = useState('');
+
+  console.log('Explanation component rendered with algorithm:', algorithm);
+  console.log('Current explanation state:', explanation);
+
+  useEffect(() => {
+    console.log('useEffect triggered with algorithm:', algorithm);
+
+    if (algorithm === 'BFS') {
+      const newExplanation =
+        'Breadth First Search is a search algorithm that traverses a tree or graph, starting at the root, and exploring all nodes at the current level before moving on to the next level.';
+      setExplanation(newExplanation);
+    } else if (algorithm === 'DFSPreOrder') {
+      setAlgorithmName('Depth-First Search — Pre-Order');
+      setTraverseOrder('(Node, Left, Right)');
+      setExplanation(
+        'Visit the current node first, then recursively traverse the left subtree, then the right subtree.'
+      );
+      setUsage(
+        'Use when you want to process a node before its children (e.g., serialize/copy a tree).'
+      );
+    } else if (algorithm === 'DFSPostOrder') {
+      setAlgorithmName('Depth-First Search — Post-Order');
+      setTraverseOrder('(Left, Right, Node)');
+      setExplanation(
+        'Depth-First Search — Post-Order (LRN): recursively traverse the left subtree, then the right subtree, and visit the current node last.'
+      );
+      setUsage(
+        'Use when you need results from children before the parent (e.g., delete/free a tree, compute sizes).'
+      );
+    } else if (algorithm === 'DFSInOrder') {
+      setAlgorithmName('Depth-First Search — In-Order');
+      setTraverseOrder('(Left, Node, Right)');
+      setExplanation(
+        'Depth-First Search — In-Order (LNR, binary trees only): recursively traverse the left subtree, visit the current node, then traverse the right subtree. On a Binary Search Tree, this yields values in ascending order.'
+      );
+      setUsage(
+        'Use when you need results from children before the parent (e.g., delete/free a tree, compute sizes).'
+      );
+    } else {
+      console.log('No matching algorithm found');
+    }
+  }, [algorithm]);
+
+  return (
+    <section className="instructions">
+      <h3>{algorithmName}</h3>
+      <aside>
+        <p>
+          <span>Traverse Order</span> : {traverseOrder}
+        </p>
+        <p>
+          <span>Explanation</span> : {explanation}
+        </p>
+        <p>
+          <span>Usage</span> : {usage}
+        </p>
+      </aside>
+    </section>
+  );
+}
+
 function App() {
   const [results, setResults] = useState([]);
   const [searchType, setSearchType] = useState('');
@@ -191,7 +257,6 @@ function App() {
   };
 
   const resetNodes = () => {
-    setSearchType('');
     const nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
       node.classList.remove('active');
@@ -274,6 +339,11 @@ function App() {
     setResults(myTree[type]());
   };
 
+  const handleReset = () => {
+    setResults([]);
+    setSearchType(''); // Clear searchType only when manually resetting
+  };
+
   return (
     <div className="app">
       <header>
@@ -347,26 +417,29 @@ function App() {
             </div>
           </section>
           {results.length > 0 ? (
-            <section className="results-container card color-bg-high">
-              <div className="results-header">
-                <h3>Results</h3>
-                <button
-                  className={`cancel ${resetActive ? '' : 'inactive'}`}
-                  onClick={() => setResults([])}>
-                  Reset
-                </button>
-              </div>
-              <code className="code-container">
-                [
-                {results.map((result, index) => (
-                  <span key={index} data-value={result} className="result">
-                    {result}
-                    {index < results.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                ]
-              </code>
-            </section>
+            <>
+              <section className="results-container card color-bg-high">
+                <div className="results-header">
+                  <h3>Results</h3>
+                  <button
+                    className={`cancel ${resetActive ? '' : 'inactive'}`}
+                    onClick={handleReset}>
+                    Reset
+                  </button>
+                </div>
+                <code className="code-container">
+                  [
+                  {results.map((result, index) => (
+                    <span key={index} data-value={result} className="result">
+                      {result}
+                      {index < results.length - 1 ? ', ' : ''}
+                    </span>
+                  ))}
+                  ]
+                </code>
+              </section>
+              {searchType && <Explanation algorithm={searchType} />}
+            </>
           ) : (
             <section className="instructions">
               <aside>
