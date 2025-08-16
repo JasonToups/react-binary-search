@@ -425,7 +425,7 @@ function App() {
           ) : (
             /* Show current algorithm info instead */
             <div className="card color-bg-low">
-              <button className="none" onClick={handleReset}>
+              <button onClick={handleReset} className="none">
                 <h2 style={{ marginBottom: 0 }}>{searchType}</h2>
               </button>
             </div>
@@ -499,7 +499,7 @@ function App() {
               {searchType && <Explanation algorithm={searchType} />}
             </>
           ) : (
-            <section className="instructions">
+            <section className="instructions" style={{ alignItems: 'center' }}>
               <aside>
                 Choose a <span>Search Algorithm</span> to see the results.
               </aside>
