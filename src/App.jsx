@@ -128,6 +128,10 @@ myTree.insert(82);
 
 function App() {
   const [results, setResults] = useState([]);
+  const [searchType, setSearchType] = useState('');
+  const [resetActive, setResetActive] = useState(false);
+  const [lines, setLines] = useState([]);
+  const containerRef = useRef(null);
   const oneRef = useRef(null);
   const twoRef = useRef(null);
   const threeRef = useRef(null);
@@ -135,8 +139,6 @@ function App() {
   const fiveRef = useRef(null);
   const sixRef = useRef(null);
   const sevenRef = useRef(null);
-  const [lines, setLines] = useState([]);
-  const containerRef = useRef(null);
 
   const updateLines = () => {
     if (!containerRef.current) return;
@@ -189,6 +191,7 @@ function App() {
   };
 
   const resetNodes = () => {
+    setSearchType('');
     const nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
       node.classList.remove('active');
@@ -199,10 +202,12 @@ function App() {
   const updateNodes = (results) => {
     let currentIndex = 0;
     let timeout = 2000;
+    setResetActive(false);
     resetNodes(); // Reset at the beginning only
 
     const processNextNode = () => {
       if (currentIndex >= results.length) {
+        setResetActive(true);
         return; // Exit when all nodes are processed
       }
 
@@ -264,6 +269,11 @@ function App() {
     };
   }, []);
 
+  const handleSearchType = (type) => {
+    setSearchType(type);
+    setResults(myTree[type]());
+  };
+
   return (
     <div className="app">
       <header>
@@ -275,20 +285,21 @@ function App() {
           <div className="card color-bg-low">
             <h2>Show the results of Different Search Algorithms</h2>
             <div className="button-container">
-              <button onClick={() => setResults(myTree.BFS())}>Breadth First Search</button>
-              <button className="accent-high" onClick={() => setResults(myTree.DFSPreOrder())}>
+              <button onClick={() => handleSearchType('BFS')}>Breadth First Search</button>
+              <button className="accent-high" onClick={() => handleSearchType('DFSPreOrder')}>
                 Depth First Search - PreOrder
               </button>
-              <button className="accent" onClick={() => setResults(myTree.DFSPostOrder())}>
+              <button className="accent" onClick={() => handleSearchType('DFSPostOrder')}>
                 Depth First Search - PostOrder
               </button>
-              <button className="accent-low" onClick={() => setResults(myTree.DFSInOrder())}>
+              <button className="accent-low" onClick={() => handleSearchType('DFSInOrder')}>
                 Depth First Search - InOrder
               </button>
             </div>
           </div>
 
           <section className="binary-tree-container" ref={containerRef}>
+            {searchType && <h3>{searchType}</h3>}
             {/* SVG container positioned behind the tree */}
             <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
               {lines.map((line, i) => (
@@ -339,7 +350,9 @@ function App() {
             <section className="results-container card color-bg-high">
               <div className="results-header">
                 <h3>Results</h3>
-                <button className="cancel" onClick={() => setResults([])}>
+                <button
+                  className={`cancel ${resetActive ? '' : 'inactive'}`}
+                  onClick={() => setResults([])}>
                   Reset
                 </button>
               </div>
@@ -356,12 +369,19 @@ function App() {
             </section>
           ) : (
             <section className="instructions">
-              <aside>Choose a search algorithm to see the results.</aside>
+              <aside>
+                Choose a <span>Search Algorithm</span> to see the results.
+              </aside>
             </section>
           )}
         </div>
       </main>
-      <footer>by: Jason Toups</footer>
+      <footer>
+        Lovingly crafted by:{' '}
+        <a href="https://jasontoups.github.io/" target="_blank" rel="noopener noreferrer">
+          Jason Toups
+        </a>
+      </footer>
     </div>
   );
 }

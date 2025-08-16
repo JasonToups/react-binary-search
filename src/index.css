@@ -6,6 +6,7 @@
 }
 
 :root {
+  --border-radius: 1em;
   /* adjust these three values to update all of the colors in the theme   */
   --base-hue: 25;
   --base-saturation: 100%;
@@ -17,7 +18,7 @@
   --color-bg-high: hsl(from var(--base-color) h s 98);
   --color-border: hsl(from var(--base-color) h s 70);
   --color-text-light: hsl(from var(--base-color) h s 45);
-  --color-text-dark: hsl(from var(--base-color) h s 5);
+  --color-text-dark: hsl(from var(--base-color) h s 20);
   --color-primary: var(--base-color);
   --color-primary-dark: hsl(from var(--base-color) h s calc(l - 20));
   --color-primary-light: hsl(from var(--base-color) h s calc(l + 30));
@@ -64,15 +65,19 @@ header {
   align-items: center;
   padding: 1em 0 1.5em;
   color: var(--color-text-light);
+  background-color: var(--color-bg-mid);
   font-size: clamp(1.25em, 4vw, 1.75em);
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 0;
+  container-name: header;
+  container-type: inline-size;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 aside {
-  font-size: clamp(1em, 4vw, 1.25em);
   color: var(--color-text-light);
-  margin-bottom: 1em;
+  font-size: clamp(1em, 4vw, 1.5em);
+  margin-bottom: 0;
 }
 
 footer {
@@ -81,10 +86,17 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 0 0 1em;
-  font-size: 1.5em;
-  color: var(--color-bg-mid);
-  background-color: var(--color-text-light);
+  font-size: clamp(1em, 4vw, 1.75em);
+  color: var(--color-primary);
+  background-color: var(--color-bg-mid);
   margin-top: auto;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+footer a {
+  color: var(--color-accent-light);
+  text-decoration: none;
+  margin-left: 0.5em;
 }
 
 main {
@@ -105,10 +117,11 @@ footer {
 
 h1 {
   margin-bottom: 0.25em;
+  font-size: clamp(1.5em, 4vw, 2.25em);
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: clamp(1.25em, 4vw, 1.75em);
   margin-bottom: 1em;
 }
 h3 {
@@ -118,12 +131,12 @@ h3 {
 
 button {
   padding: 0.5em 1em;
-  font-size: 1em;
+  font-size: clamp(0.75em, 3vw, 1.5em);
   font-weight: bold;
   background-color: var(--color-primary-light);
   color: var(--color-primary-dark);
   border: 3px solid var(--color-border);
-  border-radius: 0.5em;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -154,6 +167,13 @@ button.cancel {
   border: none;
 }
 
+button.inactive {
+  background-color: var(--color-bg-mid);
+  color: var(--color-primary-light);
+  border: 3px solid var(--color-bg-mid);
+  cursor: not-allowed;
+}
+
 code {
   font-size: 1.75em;
 }
@@ -171,6 +191,26 @@ svg line {
   width: 100%;
   max-width: 1000px;
   font-size: 1.25em;
+  container-name: content;
+  container-type: inline-size;
+}
+
+@container content (max-width: 600px) {
+  .content-container {
+    font-size: 1em;
+  }
+  h3 {
+    font-size: 1em;
+  }
+  code {
+    font-size: 1.1em;
+  }
+  .button-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .results-container {
+    min-height: 3em;
+  }
 }
 
 .results-container {
@@ -242,6 +282,11 @@ section {
   z-index: 1;
 }
 
+.binary-tree-container {
+  container-name: tree;
+  container-type: inline-size;
+}
+
 .binary-tree {
   display: grid;
   width: 100%;
@@ -269,15 +314,34 @@ section {
   border-radius: 999px;
   width: fit-content;
   padding: 1em;
-  font-size: 1.75em;
+  font-size: clamp(1.25em, 4vw, 1.75em);
   border: 10px solid transparent;
 }
 
 .binary-tree div p.active {
   background-color: var(--color-accent-light);
   border: 10px solid var(--color-border);
-  font-size: 2.5em;
+  font-size: clamp(1.5em, 4vw, 2.5em);
   padding: 0.75em;
+}
+
+@container tree (max-width: 600px) {
+  .binary-tree {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: fit-content;
+    gap: 0.25em;
+    margin-bottom: 2.5em;
+  }
+  .binary-tree div p {
+    padding: 0.25em;
+    /* font-size: 1.25em; */
+  }
+  .binary-tree div p.active {
+    /* font-size: 1.5em; */
+    padding: 0.5em;
+  }
 }
 
 .binary-tree div p.passive {
@@ -321,7 +385,7 @@ section {
 .card {
   width: fit-content;
   height: fit-content;
-  border-radius: 1em;
+  border-radius: var(--border-radius);
   border: solid 5px var(--color-border);
   background-color: var(--color-bg-mid);
   display: flex;
@@ -338,6 +402,8 @@ section {
 .card.color-bg-low {
   background-color: var(--color-bg-low);
   border-color: var(--color-bg-mid);
+  border-left: none;
+  border-right: none;
 }
 
 .card.color-bg-high {
@@ -352,4 +418,13 @@ section {
   padding: 1.5em;
   width: 100%;
   height: 100%;
+}
+
+.instructions aside {
+  font-size: 1.5em;
+}
+
+.instructions aside span {
+  font-weight: light;
+  font-style: italic;
 }
