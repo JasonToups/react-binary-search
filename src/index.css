@@ -246,7 +246,7 @@ section {
 }
 
 .binary-tree div p.passive {
-  background-color: var(--color-accent-dark);
+  background-color: var(--color-primary-dark);
 }
 
 .binary-tree div:nth-child(1) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 class Node {
   constructor(value) {
@@ -172,9 +172,12 @@ function App() {
   const updateNodes = (results) => {
     let currentIndex = 0;
     let timeout = 2000;
+    resetNodes(); // Reset at the beginning only
 
     const processNextNode = () => {
-      if (currentIndex >= results.length) return;
+      if (currentIndex >= results.length) {
+        return; // Exit when all nodes are processed
+      }
 
       const activeNode = results[currentIndex];
 
@@ -189,22 +192,16 @@ function App() {
         // Wait 3 seconds while active, then process next node
         setTimeout(() => {
           activeNodeElement.classList.add('passive');
-          activeResultsElement.classList.add('passive');
           activeNodeElement.classList.remove('active');
           activeResultsElement.classList.remove('active');
-          // Wait 1 second, then process next node
-          setTimeout(() => {
-            currentIndex++;
-            processNextNode();
-          });
+
+          currentIndex++;
+          processNextNode(); // Only call recursively if there are more nodes
         }, timeout);
       } else {
         currentIndex++;
-        processNextNode();
+        processNextNode(); // Only call recursively if there are more nodes
       }
-      setTimeout(() => {
-        resetNodes();
-      }, timeout);
     };
 
     // Start processing
