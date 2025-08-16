@@ -132,12 +132,7 @@ function Explanation({ algorithm }) {
   const [explanation, setExplanation] = useState('');
   const [usage, setUsage] = useState('');
 
-  console.log('Explanation component rendered with algorithm:', algorithm);
-  console.log('Current explanation state:', explanation);
-
   useEffect(() => {
-    console.log('useEffect triggered with algorithm:', algorithm);
-
     if (algorithm === 'BFS') {
       const newExplanation =
         'Breadth First Search is a search algorithm that traverses a tree or graph, starting at the root, and exploring all nodes at the current level before moving on to the next level.';
@@ -195,7 +190,8 @@ function Explanation({ algorithm }) {
 function App() {
   const [results, setResults] = useState([]);
   const [searchType, setSearchType] = useState('');
-  const [resetActive, setResetActive] = useState(false);
+  const [processingResults, setProcessingResults] = useState(false);
+  const [currentTimeout, setCurrentTimeout] = useState(null); // Track current timeout
   const [lines, setLines] = useState([]);
   const containerRef = useRef(null);
   const oneRef = useRef(null);
@@ -205,6 +201,31 @@ function App() {
   const fiveRef = useRef(null);
   const sixRef = useRef(null);
   const sevenRef = useRef(null);
+
+  const cancelCurrentProcess = () => {
+    // Clear the current timeout
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+      setCurrentTimeout(null);
+    }
+
+    // Clear any pending timeouts by resetting state
+    setProcessingResults(false);
+
+    // Clear any active/passive classes from nodes
+    const nodes = document.querySelectorAll('.node');
+    nodes.forEach((node) => {
+      node.classList.remove('active');
+      node.classList.remove('passive');
+    });
+
+    // Clear any active/passive classes from results
+    const results = document.querySelectorAll('.result');
+    results.forEach((result) => {
+      result.classList.remove('active');
+      result.classList.remove('passive');
+    });
+  };
 
   const updateLines = () => {
     if (!containerRef.current) return;
@@ -256,52 +277,45 @@ function App() {
     }
   };
 
-  const resetNodes = () => {
-    const nodes = document.querySelectorAll('.node');
-    nodes.forEach((node) => {
-      node.classList.remove('active');
-      node.classList.remove('passive');
-    });
-  };
-
   const updateNodes = (results) => {
+    // Cancel any existing process first
+    cancelCurrentProcess();
+
     let currentIndex = 0;
     let timeout = 2000;
-    setResetActive(false);
-    resetNodes(); // Reset at the beginning only
+    setProcessingResults(true);
 
     const processNextNode = () => {
       if (currentIndex >= results.length) {
-        setResetActive(true);
-        return; // Exit when all nodes are processed
+        setProcessingResults(false);
+        setCurrentTimeout(null);
+        return;
       }
 
       const activeNode = results[currentIndex];
-
       const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
       const activeResultsElement = document.querySelector(`span[data-value="${activeNode}"]`);
 
       if (activeNodeElement) {
-        // Add active class
         activeNodeElement.classList.add('active');
         activeResultsElement.classList.add('active');
 
-        // Wait 3 seconds while active, then process next node
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           activeNodeElement.classList.add('passive');
           activeNodeElement.classList.remove('active');
           activeResultsElement.classList.remove('active');
 
           currentIndex++;
-          processNextNode(); // Only call recursively if there are more nodes
+          processNextNode();
         }, timeout);
+
+        setCurrentTimeout(timeoutId);
       } else {
         currentIndex++;
-        processNextNode(); // Only call recursively if there are more nodes
+        processNextNode();
       }
     };
 
-    // Start processing
     processNextNode();
   };
 
@@ -335,6 +349,11 @@ function App() {
   }, []);
 
   const handleSearchType = (type) => {
+    // Allow interruption - cancel current and start new
+    if (processingResults) {
+      cancelCurrentProcess();
+    }
+
     setSearchType(type);
     setResults(myTree[type]());
   };
@@ -422,8 +441,8 @@ function App() {
                 <div className="results-header">
                   <h3>Results</h3>
                   <button
-                    className={`cancel ${resetActive ? '' : 'inactive'}`}
-                    onClick={handleReset}>
+                    className={`cancel ${processingResults ? 'inactive' : ''}`}
+                    onClick={() => setResults([])}>
                     Reset
                   </button>
                 </div>
