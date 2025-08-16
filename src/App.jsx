@@ -72,18 +72,46 @@ class BST {
   }
   // Depth First Search
   DFSPreOrder() {
-    let currentNode = this.root;
-    let queue = [];
+    let rootNode = this.root;
     let results = [];
-    if (!currentNode) return results;
-    queue.push(currentNode);
+    if (!rootNode) return results;
 
-    while (queue.length) {
-      currentNode = queue.shift();
+    const traverse = (currentNode) => {
       results.push(currentNode.value);
-      if (currentNode.left) queue.push(currentNode.left);
-      if (currentNode.right) queue.push(currentNode.right);
-    }
+      if (currentNode.left) traverse(currentNode.left);
+      if (currentNode.right) traverse(currentNode.right);
+    };
+
+    traverse(rootNode);
+    return results;
+  }
+  DFSPostOrder() {
+    let rootNode = this.root;
+    let results = [];
+    if (!rootNode) return results;
+
+    const traverse = (currentNode) => {
+      if (currentNode.left) traverse(currentNode.left);
+      if (currentNode.right) traverse(currentNode.right);
+      results.push(currentNode.value);
+    };
+
+    traverse(rootNode);
+    return results;
+  }
+
+  DFSInOrder() {
+    let rootNode = this.root;
+    let results = [];
+    if (!rootNode) return results;
+
+    const traverse = (currentNode) => {
+      if (currentNode.left) traverse(currentNode.left);
+      results.push(currentNode.value);
+      if (currentNode.right) traverse(currentNode.right);
+    };
+
+    traverse(rootNode);
     return results;
   }
 }
@@ -99,7 +127,6 @@ myTree.insert(52);
 myTree.insert(82);
 
 function App() {
-  const [clicked, setClicked] = useState(false);
   const [results, setResults] = useState([]);
   const oneRef = useRef(null);
   const twoRef = useRef(null);
@@ -238,22 +265,27 @@ function App() {
   }, []);
 
   return (
-    <div className="app" data-clicked={clicked}>
+    <div className="app">
       <header>
         <h1>React Binary Search Tree</h1>
-        <aside>An Exporation of Binary Search Operations</aside>
+        <aside>An Exploration of Binary Search Operations</aside>
       </header>
       <main>
         <div className="content-container">
-          <div className="card">
+          <div className="card color-bg-low">
             <h2>Show the results of Different Search Algorithms</h2>
             <div className="button-container">
               <button onClick={() => setResults(myTree.BFS())}>Breadth First Search</button>
-              {/* <button onClick={() => setResults(myTree.DFS())}>Depth First Search</button> */}
+              <button className="accent-high" onClick={() => setResults(myTree.DFSPreOrder())}>
+                Depth First Search - PreOrder
+              </button>
+              <button className="accent" onClick={() => setResults(myTree.DFSPostOrder())}>
+                Depth First Search - PostOrder
+              </button>
+              <button className="accent-low" onClick={() => setResults(myTree.DFSInOrder())}>
+                Depth First Search - InOrder
+              </button>
             </div>
-            <button onClick={() => setResults([])} className="accent">
-              Reset
-            </button>
           </div>
 
           <section className="binary-tree-container" ref={containerRef}>
@@ -303,8 +335,14 @@ function App() {
               </div>
             </div>
           </section>
-          <section className="results-container">
-            {results.length > 0 ? (
+          {results.length > 0 ? (
+            <section className="results-container card color-bg-high">
+              <div className="results-header">
+                <h3>Results</h3>
+                <button className="cancel" onClick={() => setResults([])}>
+                  Reset
+                </button>
+              </div>
               <code className="code-container">
                 [
                 {results.map((result, index) => (
@@ -315,10 +353,12 @@ function App() {
                 ))}
                 ]
               </code>
-            ) : (
-              <p>No results yet</p>
-            )}
-          </section>
+            </section>
+          ) : (
+            <section className="instructions">
+              <aside>Choose a search algorithm to see the results.</aside>
+            </section>
+          )}
         </div>
       </main>
       <footer>by: Jason Toups</footer>

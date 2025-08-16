@@ -69,6 +69,12 @@ header {
   margin-bottom: 1em;
 }
 
+aside {
+  font-size: clamp(1em, 4vw, 1.25em);
+  color: var(--color-text-light);
+  margin-bottom: 1em;
+}
+
 footer {
   height: fit-content;
   display: flex;
@@ -101,43 +107,13 @@ h1 {
   margin-bottom: 0.25em;
 }
 
-h2,
-h3 {
-  font-size: 1em;
+h2 {
+  font-size: 1.5em;
   margin-bottom: 1em;
 }
-
-code {
-  font-size: 2em;
-}
-
-svg line {
-  stroke: var(--color-border);
-  stroke-width: 2px;
-}
-
-.content-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 1000px;
-}
-
-.results-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  min-height: 5em;
-}
-
-.code-container .result.active {
-  color: var(--color-accent-light);
-  font-size: 2em;
-  font-weight: bold;
+h3 {
+  font-size: 1.25em;
+  margin-bottom: 0.25em;
 }
 
 button {
@@ -157,14 +133,73 @@ button {
 button.accent {
   background-color: var(--color-accent);
   color: var(--color-bg-low);
+  border: 3px solid var(--color-accent-light);
+}
+
+button.accent-low {
+  background-color: var(--color-accent-dark);
+  color: var(--color-bg-low);
+  border: 3px solid var(--color-accent-light);
+}
+
+button.accent-high {
+  background-color: var(--color-accent-light);
+  color: var(--color-bg-low);
+  border: 3px solid var(--color-accent);
+}
+
+button.cancel {
+  background-color: var(--color-cancel);
+  color: var(--color-text-light);
+  border: none;
+}
+
+code {
+  font-size: 1.75em;
+}
+
+svg line {
+  stroke: var(--color-border);
+  stroke-width: 2px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  font-size: 1.25em;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  min-height: 5em;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.code-container .result.active {
+  color: var(--color-accent-light);
+  font-size: 2em;
+  font-weight: bold;
 }
 
 .button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75em;
-  margin-bottom: 1em;
 }
 
 section {
@@ -288,14 +323,33 @@ section {
   height: fit-content;
   border-radius: 1em;
   border: solid 5px var(--color-border);
+  background-color: var(--color-bg-mid);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 2em;
   padding: 1em;
 }
 
 .card.color-border {
   border-color: var(--color-bg-mid);
+}
+
+.card.color-bg-low {
+  background-color: var(--color-bg-low);
+  border-color: var(--color-bg-mid);
+}
+
+.card.color-bg-high {
+  background-color: var(--color-bg-high);
+  border-color: var(--color-bg-mid);
+}
+
+.instructions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5em;
+  width: 100%;
+  height: 100%;
 }
