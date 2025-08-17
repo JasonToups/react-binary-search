@@ -126,10 +126,38 @@ myTree.insert(27);
 myTree.insert(52);
 myTree.insert(82);
 
+function CodeBlock({ code, language }) {
+  const codeRef = useRef(null);
+
+  useEffect(() => {
+    // Wait for the next tick to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (codeRef.current && window.hljs) {
+        try {
+          window.hljs.highlightElement(codeRef.current);
+        } catch (error) {
+          console.error('Highlight.js error:', error);
+        }
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [code]);
+
+  return (
+    <pre>
+      <code ref={codeRef} className={`hljs ${language}`}>
+        {code}
+      </code>
+    </pre>
+  );
+}
+
 function Explanation({ algorithm }) {
   const [algorithmName, setAlgorithmName] = useState('');
   const [traverseOrder, setTraverseOrder] = useState('');
   const [explanation, setExplanation] = useState('');
+  const [codeString, setCodeString] = useState(`const add = (a, b) => a + b;`);
   const [usage, setUsage] = useState('');
 
   useEffect(() => {
@@ -142,6 +170,24 @@ function Explanation({ algorithm }) {
       setUsage(
         'Use to find the shortest path (in number of edges) in unweighted graphs, check connectivity, and produce level-order listings of a tree (e.g., showing nodes by depth in a UI).'
       );
+      setCodeString(`
+// Breadth First Search
+BFS() {
+  let currentNode = this.root;
+  let queue = [];
+  let results = [];
+  if (!currentNode) return results;
+  queue.push(currentNode);
+
+  while (queue.length) {
+    currentNode = queue.shift();
+    results.push(currentNode.value);
+    if (currentNode.left) queue.push(currentNode.left);
+    if (currentNode.right) queue.push(currentNode.right);
+  }
+  return results;
+}
+      `);
     } else if (algorithm === 'DFSPreOrder') {
       setAlgorithmName('Depth-First Search — Pre-Order');
       setTraverseOrder('(Node, Left, Right)');
@@ -150,6 +196,25 @@ function Explanation({ algorithm }) {
       );
       setUsage(
         'Use when you want to process a node before its children (e.g., serialize/copy a tree).'
+      );
+      setCodeString(
+        `
+// Depth First Search - PreOrder
+DFSPreOrder() {
+  let rootNode = this.root;
+  let results = [];
+  if (!rootNode) return results;
+
+  const traverse = (currentNode) => {
+    results.push(currentNode.value);
+    if (currentNode.left) traverse(currentNode.left);
+    if (currentNode.right) traverse(currentNode.right);
+  };
+
+  traverse(rootNode);
+  return results;
+}
+      `.trim()
       );
     } else if (algorithm === 'DFSPostOrder') {
       setAlgorithmName('Depth-First Search — Post-Order');
@@ -160,6 +225,25 @@ function Explanation({ algorithm }) {
       setUsage(
         'Use when you need results from children before the parent (e.g., delete/free a tree, compute sizes).'
       );
+      setCodeString(
+        `
+// Depth First Search - PostOrder
+DFSPostOrder() {
+  let rootNode = this.root;
+  let results = [];
+  if (!rootNode) return results;
+
+  const traverse = (currentNode) => {
+    if (currentNode.left) traverse(currentNode.left);
+    if (currentNode.right) traverse(currentNode.right);
+    results.push(currentNode.value);
+  };
+
+  traverse(rootNode);
+  return results;
+}
+      `.trim()
+      );
     } else if (algorithm === 'DFSInOrder') {
       setAlgorithmName('Depth-First Search — In-Order');
       setTraverseOrder('(Left, Node, Right)');
@@ -169,25 +253,49 @@ function Explanation({ algorithm }) {
       setUsage(
         'Use when you need results from children before the parent (e.g., delete/free a tree, compute sizes).'
       );
+      setCodeString(
+        `
+// Depth First Search - InOrder
+DFSInOrder() {
+  let rootNode = this.root;
+  let results = [];
+  if (!rootNode) return results;
+
+  const traverse = (currentNode) => {
+    if (currentNode.left) traverse(currentNode.left);
+    results.push(currentNode.value);
+    if (currentNode.right) traverse(currentNode.right);
+  };
+
+  traverse(rootNode);
+  return results;
+}
+      `.trim()
+      );
     } else {
       console.log('No matching algorithm found');
     }
   }, [algorithm]);
 
   return (
-    <section className="instructions">
-      <h3>{algorithmName}</h3>
-      <aside>
-        <p>
-          <span>Traverse Order</span> : {traverseOrder}
-        </p>
-        <p>
-          <span>Explanation</span> : {explanation}
-        </p>
-        <p>
-          <span>Usage</span> : {usage}
-        </p>
-      </aside>
+    <section className="explanation">
+      <div className="instructions">
+        <h3>{algorithmName}</h3>
+        <aside>
+          <p>
+            <span>Traverse Order</span> : {traverseOrder}
+          </p>
+          <p>
+            <span>Explanation</span> : {explanation}
+          </p>
+          <p>
+            <span>Usage</span> : {usage}
+          </p>
+        </aside>
+      </div>
+      <div className="code-container">
+        <CodeBlock code={codeString} language="javascript" />
+      </div>
     </section>
   );
 }
@@ -351,6 +459,17 @@ function App() {
       resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    // Initialize highlight.js
+    if (window.hljs) {
+      try {
+        window.hljs.highlightAll();
+      } catch (error) {
+        console.error('App: highlightAll() error:', error);
+      }
+    }
   }, []);
 
   const scrollToTreeHeading = () => {

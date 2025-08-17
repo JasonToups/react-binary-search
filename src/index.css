@@ -187,6 +187,7 @@ code {
   font-size: 1.75em;
   display: inline-block;
   height: fit-content;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 svg line {
@@ -227,7 +228,7 @@ svg line {
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  /* min-height: 5em; */
+  min-height: 13rem;
 }
 
 .results-header {
@@ -258,7 +259,7 @@ svg line {
 
 .code-container .result.active {
   color: var(--color-accent-light);
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
@@ -296,6 +297,8 @@ section {
 .binary-tree-container {
   position: relative;
   width: 100%;
+  height: 100%;
+  min-height: 31rem;
   margin: 1em 1em 2.5em 1em;
   container-name: tree;
   container-type: inline-size;
@@ -315,7 +318,7 @@ section {
   display: grid;
   width: 100%;
   height: 100%;
-  min-height: 25rem;
+  min-height: 30rem;
   gap: 1em;
   margin-bottom: 2.5em;
   position: relative;
@@ -463,11 +466,13 @@ section {
   border-color: var(--color-bg-mid);
 }
 
-.instructions {
+.explanation {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+}
+.instructions {
   text-align: left;
   padding: 1.5em;
   line-height: 1.5;
@@ -484,4 +489,14 @@ section {
   font-weight: light;
   font-style: italic;
   color: var(--color-text-dark);
+}
+
+.explanation .code-container {
+  width: 100%;
+  height: fit-content;
+  margin-top: 1em;
+  text-align: left;
+  font-size: clamp(0.75em, 1vw, 1em);
+  overflow-x: auto;
+  overflow: hidden;
 }
