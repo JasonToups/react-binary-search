@@ -424,7 +424,7 @@ function App() {
             </div>
           ) : (
             /* Show current algorithm info instead */
-            <div className="card color-bg-low">
+            <div className="card color-bg-low fit-content">
               <button onClick={handleReset} className="none">
                 <h2 style={{ marginBottom: 0 }}>{searchType}</h2>
               </button>
@@ -480,21 +480,23 @@ function App() {
           </section>
           {results.length > 0 ? (
             <>
-              <section className="results-container card color-bg-high">
+              <section className="card results-container color-bg-high">
                 <div className="results-header">
                   <h3>Results</h3>
                   <button onClick={handleReset}>Reset</button>
                 </div>
-                <code className="code-container">
-                  [
-                  {results.map((result, index) => (
-                    <span key={index} data-value={result} className="result">
-                      {result}
-                      {index < results.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}
-                  ]
-                </code>
+                <div className="code-container">
+                  <code>
+                    [
+                    {results.map((result, index) => (
+                      <span key={index} data-value={result} className="result">
+                        {result}
+                        {index < results.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    ]
+                  </code>
+                </div>
               </section>
               {searchType && <Explanation algorithm={searchType} />}
             </>

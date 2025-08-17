@@ -185,6 +185,8 @@ button.none {
 
 code {
   font-size: 1.75em;
+  display: inline-block;
+  height: fit-content;
 }
 
 svg line {
@@ -217,18 +219,15 @@ svg line {
   .button-container {
     grid-template-columns: repeat(1, 1fr);
   }
-  .results-container {
-    min-height: 3em;
-  }
 }
 
-.results-container {
+.card.results-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
-  min-height: 5em;
+  /* min-height: 5em; */
 }
 
 .results-header {
@@ -237,6 +236,24 @@ svg line {
   align-items: center;
   width: 100%;
   margin-bottom: 1em;
+}
+
+@container content (max-width: 600px) {
+  .card.results-container {
+    min-height: 9rem;
+  }
+  .results-header {
+    margin-bottom: 0;
+  }
+}
+
+.code-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
 }
 
 .code-container .result.active {
@@ -280,6 +297,8 @@ section {
   position: relative;
   width: 100%;
   margin: 1em 1em 2.5em 1em;
+  container-name: tree;
+  container-type: inline-size;
 }
 
 .tree-svg {
@@ -290,11 +309,6 @@ section {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-}
-
-.binary-tree-container {
-  container-name: tree;
-  container-type: inline-size;
 }
 
 .binary-tree {
@@ -335,21 +349,39 @@ section {
   padding: 0.75em;
 }
 
+@media screen and (max-width: 600px) {
+  section {
+    margin-bottom: 0;
+  }
+
+  .binary-tree-container {
+    margin: 1em;
+  }
+}
+
 @container tree (max-width: 600px) {
   .binary-tree {
     display: grid;
     width: 100%;
     height: 100%;
-    min-height: fit-content;
+    min-height: 18rem;
     gap: 0.25em;
-    margin-bottom: 2.5em;
+    margin-bottom: 0;
   }
   .binary-tree div p {
-    padding: 0.25em;
-    /* font-size: 1.25em; */
+    background-color: var(--color-accent);
+    color: white;
+    border-radius: 999px;
+    width: fit-content;
+    padding: 0.5em;
+    font-size: 1.25em;
+    border: 10px solid transparent;
   }
+
   .binary-tree div p.active {
-    /* font-size: 1.5em; */
+    background-color: var(--color-accent-light);
+    border: 10px solid var(--color-border);
+    font-size: 1.25em;
     padding: 0.5em;
   }
 }
@@ -405,6 +437,12 @@ section {
   padding: 1em;
 }
 
+@container content (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
+}
+
 .card.color-border {
   border-color: var(--color-bg-mid);
 }
@@ -414,6 +452,10 @@ section {
   border-color: var(--color-bg-mid);
   border-left: none;
   border-right: none;
+}
+
+.card.color-bg-low.fit-content {
+  width: fit-content;
 }
 
 .card.color-bg-high {
