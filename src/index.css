@@ -184,7 +184,7 @@ button.none {
 }
 
 code {
-  font-size: 1.75em;
+  font-size: clamp(1em, 4.5vw, 1.75em);
   display: inline-block;
   height: fit-content;
   font-family: 'Courier New', Courier, monospace;
@@ -259,7 +259,7 @@ svg line {
 
 .code-container .result.active {
   color: var(--color-accent-light);
-  font-size: 1.5em;
+  font-size: clamp(1.25em, 4.7vw, 1.6em);
   font-weight: bold;
 }
 
@@ -468,13 +468,14 @@ section {
 
 .explanation {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 0;
 }
 .instructions {
   text-align: left;
-  padding: 1.5em;
+  padding: 1.5em 1.5em 0 1.5em;
   line-height: 1.5;
   width: 100%;
   max-width: 750px;
@@ -491,12 +492,21 @@ section {
   color: var(--color-text-dark);
 }
 
-.explanation .code-container {
+.explanation.code-container {
   width: 100%;
-  height: fit-content;
+  height: 100%;
   margin-top: 1em;
   text-align: left;
-  font-size: clamp(0.75em, 1vw, 1em);
   overflow-x: auto;
-  overflow: hidden;
+  justify-content: left;
+  margin: 0 0 1.25em 0;
+}
+.explanation.code-container pre {
+  width: 100%;
+}
+.explanation.code-container code {
+  font-size: clamp(1em, 2.5vw, 1.5em);
+}
+.explanation.code-container code.hljs {
+  background-color: var(--color-bg-high);
 }

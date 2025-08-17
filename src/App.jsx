@@ -278,25 +278,27 @@ DFSInOrder() {
   }, [algorithm]);
 
   return (
-    <section className="explanation">
-      <div className="instructions">
-        <h3>{algorithmName}</h3>
-        <aside>
-          <p>
-            <span>Traverse Order</span> : {traverseOrder}
-          </p>
-          <p>
-            <span>Explanation</span> : {explanation}
-          </p>
-          <p>
-            <span>Usage</span> : {usage}
-          </p>
-        </aside>
-      </div>
-      <div className="code-container">
+    <>
+      <section className="explanation">
+        <div className="instructions">
+          <h3>{algorithmName}</h3>
+          <aside>
+            <p>
+              <span>Traverse Order</span> : {traverseOrder}
+            </p>
+            <p>
+              <span>Explanation</span> : {explanation}
+            </p>
+            <p>
+              <span>Usage</span> : {usage}
+            </p>
+          </aside>
+        </div>
+      </section>
+      <section className="code-container explanation">
         <CodeBlock code={codeString} language="javascript" />
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
