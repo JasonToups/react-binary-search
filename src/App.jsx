@@ -623,7 +623,7 @@ function App() {
             </>
           ) : (
             <section className="instructions" style={{ alignItems: 'center' }}>
-              <aside>
+              <aside className="choose-algo">
                 Choose a <span>Search Algorithm</span> to see the results.
               </aside>
             </section>

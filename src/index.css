@@ -114,6 +114,7 @@ aside {
   color: var(--color-text-light);
   font-size: clamp(1em, 4vw, 1.5em);
   margin-bottom: 0;
+  text-align: center;
 }
 
 header aside {
@@ -121,6 +122,10 @@ header aside {
 }
 
 .instructions aside {
+  text-align: left;
+}
+
+.instructions .choose-algo {
   text-align: center;
 }
 
