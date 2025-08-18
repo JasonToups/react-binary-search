@@ -184,7 +184,7 @@ button.none {
 }
 
 code {
-  font-size: clamp(1em, 4.5vw, 1.75em);
+  font-size: clamp(0.75em, 4.5vw, 1.75em);
   display: inline-block;
   height: fit-content;
   font-family: 'Courier New', Courier, monospace;
@@ -213,9 +213,6 @@ svg line {
   }
   h3 {
     font-size: 1em;
-  }
-  code {
-    font-size: 1.1em;
   }
   .button-container {
     grid-template-columns: repeat(1, 1fr);
@@ -298,7 +295,7 @@ section {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 31rem;
+  min-height: 20rem;
   margin: 1em 1em 2.5em 1em;
   container-name: tree;
   container-type: inline-size;
@@ -318,7 +315,6 @@ section {
   display: grid;
   width: 100%;
   height: 100%;
-  min-height: 30rem;
   gap: 1em;
   margin-bottom: 2.5em;
   position: relative;
@@ -475,7 +471,7 @@ section {
 }
 .instructions {
   text-align: left;
-  padding: 1.5em 1.5em 0 1.5em;
+  padding: 1.5em 1.5em 1em 1.5em;
   line-height: 1.5;
   width: 100%;
   max-width: 750px;

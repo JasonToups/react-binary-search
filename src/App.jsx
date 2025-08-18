@@ -295,7 +295,7 @@ DFSInOrder() {
           </aside>
         </div>
       </section>
-      <section className="code-container explanation">
+      <section className="explanation code-container">
         <CodeBlock code={codeString} language="javascript" />
       </section>
     </>
