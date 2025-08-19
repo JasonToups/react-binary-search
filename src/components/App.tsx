@@ -544,7 +544,7 @@ function App() {
                 </CardHeader>
               </Card>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
                 <AlgorithmCard
                   title="Breadth-First Search"
                   description="Level-order traversal visiting nodes layer by layer from left to right"

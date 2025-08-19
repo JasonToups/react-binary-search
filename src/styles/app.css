@@ -76,8 +76,8 @@ header aside {
 }
 
 .tree-svg line {
-  stroke: var(--color-border);
-  stroke-width: 2;
+  stroke: var(--muted-foreground);
+  stroke-width: 1.5;
   stroke-linecap: round;
 }
 
@@ -108,13 +108,13 @@ header aside {
   width: fit-content;
   padding: 1em;
   font-size: clamp(1.25em, 4vw, 1.75em);
-  border: 10px solid transparent;
+  border: 5px solid var(--muted-foreground);
   transition: all 0.2s ease;
 }
 
 .binary-tree div p.active {
   background-color: var(--secondary);
-  border: 10px solid var(--border);
+  border: 7px solid var(--border);
   font-size: clamp(1.5em, 4vw, 2.5em);
   padding: 0.75em;
 }
@@ -122,6 +122,7 @@ header aside {
 .binary-tree div p.passive {
   background-color: var(--muted);
   color: var(--muted-foreground);
+  border: 5px solid var(--muted-foreground);
 }
 
 /* Result styling for algorithm execution feedback */
