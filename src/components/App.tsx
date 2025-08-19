@@ -327,7 +327,7 @@ function App() {
     if (!containerRef.current) return;
 
     const containerRect = containerRef.current.getBoundingClientRect();
-    const treeElement = containerRef.current.querySelector('.grid');
+    const treeElement = containerRef.current.querySelector('.binary-tree');
     if (!treeElement) return;
 
     const treeRect = treeElement.getBoundingClientRect();
@@ -362,13 +362,13 @@ function App() {
       const seven = getCenter(sevenRef.current);
 
       setLines([
-        // Root connections (47 → 21, 47 → 76)
+        // Root connections
         { x1: one.x, y1: one.y, x2: two.x, y2: two.y },
         { x1: one.x, y1: one.y, x2: three.x, y2: three.y },
-        // Left subtree connections (21 → 18, 21 → 27)
+        // Left subtree connections
         { x1: two.x, y1: two.y, x2: four.x, y2: four.y },
         { x1: two.x, y1: two.y, x2: five.x, y2: five.y },
-        // Right subtree connections (76 → 52, 76 → 82)
+        // Right subtree connections
         { x1: three.x, y1: three.y, x2: six.x, y2: six.y },
         { x1: three.x, y1: three.y, x2: seven.x, y2: seven.y },
       ]);
@@ -391,27 +391,17 @@ function App() {
       }
 
       const activeNode = results[currentIndex];
-      const activeNodeElement = document.querySelector(`[data-value="${activeNode}"]`);
+      const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
       const activeResultsElement = document.querySelector(`span[data-value="${activeNode}"]`);
 
       if (activeNodeElement && activeResultsElement) {
-        activeNodeElement.classList.add(
-          'ring-4',
-          'ring-primary',
-          'ring-offset-2',
-          'ring-offset-background'
-        );
-        activeResultsElement.classList.add('text-primary', 'font-bold');
+        activeNodeElement.classList.add('active');
+        activeResultsElement.classList.add('active');
 
         const timeoutId = setTimeout(() => {
-          activeNodeElement.classList.add('opacity-50');
-          activeNodeElement.classList.remove(
-            'ring-4',
-            'ring-primary',
-            'ring-offset-2',
-            'ring-offset-background'
-          );
-          activeResultsElement.classList.remove('text-primary', 'font-bold');
+          activeNodeElement.classList.add('passive');
+          activeNodeElement.classList.remove('active');
+          activeResultsElement.classList.remove('active');
 
           currentIndex++;
           processNextNode();
@@ -607,82 +597,48 @@ function App() {
             </Card>
           )}
 
-          <section
-            className="relative bg-card rounded-lg border border-border p-8"
-            ref={containerRef}>
+          <section className="binary-tree-container" ref={containerRef}>
             {/* SVG container positioned behind the tree */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none">
+            <svg className="tree-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
               {lines.map((line, i) => (
-                <line
-                  key={i}
-                  x1={line.x1}
-                  y1={line.y1}
-                  x2={line.x2}
-                  y2={line.y2}
-                  stroke="hsl(var(--border))"
-                  strokeWidth="0.5"
-                />
+                <line key={i} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} />
               ))}
             </svg>
 
             {/* Tree nodes positioned on top */}
-            <div className="binary-tree-grid">
-              <div className="tree-node root-node">
-                <p
-                  className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-semibold text-sm shadow-md transition-all duration-200 hover:scale-110"
-                  ref={oneRef}
-                  data-value="47">
+            <div className="binary-tree">
+              <div>
+                <p className="node" ref={oneRef} data-value="47">
                   47
                 </p>
               </div>
-              <div className="tree-node left-child">
-                <p
-                  className="bg-secondary text-secondary-foreground rounded-full w-10 h-10 flex items-center justify-center font-medium text-sm shadow-md transition-all duration-200 hover:scale-110"
-                  ref={twoRef}
-                  data-value="21">
+              <div>
+                <p className="node" ref={twoRef} data-value="21">
                   21
                 </p>
               </div>
-              <div className="tree-node right-child">
-                <p
-                  className="bg-secondary text-secondary-foreground rounded-full w-10 h-10 flex items-center justify-center font-medium text-sm shadow-md transition-all duration-200 hover:scale-110"
-                  ref={threeRef}
-                  data-value="76">
+              <div>
+                <p className="node" ref={threeRef} data-value="76">
                   76
                 </p>
               </div>
-              <div className="tree-node left-left-grandchild">
-                <p
-                  className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
-                  ref={fourRef}
-                  data-value="18">
+              <div>
+                <p className="node" ref={fourRef} data-value="18">
                   18
                 </p>
               </div>
-              <div className="tree-node left-right-grandchild">
-                <p
-                  className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
-                  ref={fiveRef}
-                  data-value="27">
+              <div>
+                <p className="node" ref={fiveRef} data-value="27">
                   27
                 </p>
               </div>
-              <div className="tree-node right-left-grandchild">
-                <p
-                  className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
-                  ref={sixRef}
-                  data-value="52">
+              <div>
+                <p className="node" ref={sixRef} data-value="52">
                   52
                 </p>
               </div>
-              <div className="tree-node right-right-grandchild">
-                <p
-                  className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
-                  ref={sevenRef}
-                  data-value="82">
+              <div>
+                <p className="node" ref={sevenRef} data-value="82">
                   82
                 </p>
               </div>

@@ -33,4 +33,5 @@ requirements:
 - Always Use our memory-bank folder in our project directory, and the memory mcp server, to keep our project on track, by creating tasks, and following the documents located iN the memory-bank.
 - Always check our package.json with fileserver MCP server to verify the version of our packages before replying to our requests
 - Use Playwright MCP server to validate UI and styling updates.
+- All of our layouts must be responsive, and favor CSS Grid and Flexbox for layouts. Only use absolute or relative positioning when necessary
 ---
