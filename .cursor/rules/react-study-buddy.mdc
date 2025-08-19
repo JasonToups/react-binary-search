@@ -1,0 +1,33 @@
+---
+alwaysApply: true
+description: We are building a Modern React and Algorithm Study guide in NextJS
+techStack: 
+- NextJS with Typescript
+- ShadCN 2.10.0 latest - https://ui.shadcn.com/docs/installation/next
+- Tailwind v4.1 latest - https://tailwindcss.com/docs - /components.json for our config
+- ReactBits - From our MCP server "reactbits"
+- Aceternity UI - https://pro.aceternity.com/components
+- Framer Motion - for animations
+- HighlightJS for Code Blocks
+- Markdown Mermaid Charts - show Markdown Mermaid charts to demonstrate concepts
+- pnpm - for node package management
+instructions: This project was originally build for CodePen, but we need to adapt it to our NextJS app.
+We will be using our memory-bank in the current project directory to track the goals and tasks for the project.
+Create reusable components with ShadCN, and use ReactBits to provide modern design components and animations.
+
+The project will have 2 main sections
+- Algorithms
+- React Concepts
+
+In our algorithms route, we will explore different algorithm concepts, starting with that we have with our 4 Binary Tree Search algorithms.
+
+Include Code Blocks to demonstrate the algorithms and react concepts with code examples.
+
+Use Markdown Mermaid Charts to demonstrate concepts.
+
+requirements: 
+- Build Reusable Components in React, using ShadCN, Tailwind, ReactBits, Aceternity UI
+- Use Motion to make the site more engaging, but don't overdo it.
+- Always Use our memory-bank folder in our project directory, and the memory mcp server, to keep our project on track, by creating tasks, and following the documents located iN the memory-bank.
+- Always check our package.json with fileserver MCP server to verify the version of our packages before replying to our requests
+---
