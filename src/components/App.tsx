@@ -1,28 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+'use client';
 
-class Node {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
+import React, { useState, useEffect, useRef } from 'react';
+import { AlgorithmCard } from './AlgorithmCard';
+import { CodeBlock } from './CodeBlock';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+interface Node {
+  value: number;
+  left: Node | null;
+  right: Node | null;
 }
 
 // Binary Search Tree
 class BST {
+  root: Node | null;
+
   constructor() {
     this.root = null;
   }
 
-  insert(value) {
-    const newNode = new Node(value);
+  insert(value: number): BST {
+    const newNode: Node = { value, left: null, right: null };
     if (this.root === null) {
       this.root = newNode;
       return this;
     }
     let temp = this.root;
     while (true) {
-      if (newNode.value === temp.value) return undefined;
+      if (newNode.value === temp.value) return this;
       if (newNode.value < temp.value) {
         if (temp.left === null) {
           temp.left = newNode;
@@ -39,14 +47,14 @@ class BST {
     }
   }
 
-  contains(value) {
+  contains(value: number): boolean {
     if (this.root === null) return false;
     let temp = this.root;
     while (temp) {
       if (value < temp.value) {
-        temp = temp.left;
+        temp = temp.left!;
       } else if (value > temp.value) {
-        temp = temp.right;
+        temp = temp.right!;
       } else {
         return true;
       }
@@ -55,28 +63,29 @@ class BST {
   }
 
   // Breadth First Search
-  BFS() {
+  BFS(): number[] {
     let currentNode = this.root;
-    let queue = [];
-    let results = [];
+    let queue: Node[] = [];
+    let results: number[] = [];
     if (!currentNode) return results;
     queue.push(currentNode);
 
     while (queue.length) {
-      currentNode = queue.shift();
+      currentNode = queue.shift()!;
       results.push(currentNode.value);
       if (currentNode.left) queue.push(currentNode.left);
       if (currentNode.right) queue.push(currentNode.right);
     }
     return results;
   }
+
   // Depth First Search
-  DFSPreOrder() {
+  DFSPreOrder(): number[] {
     let rootNode = this.root;
-    let results = [];
+    let results: number[] = [];
     if (!rootNode) return results;
 
-    const traverse = (currentNode) => {
+    const traverse = (currentNode: Node) => {
       results.push(currentNode.value);
       if (currentNode.left) traverse(currentNode.left);
       if (currentNode.right) traverse(currentNode.right);
@@ -85,12 +94,13 @@ class BST {
     traverse(rootNode);
     return results;
   }
-  DFSPostOrder() {
+
+  DFSPostOrder(): number[] {
     let rootNode = this.root;
-    let results = [];
+    let results: number[] = [];
     if (!rootNode) return results;
 
-    const traverse = (currentNode) => {
+    const traverse = (currentNode: Node) => {
       if (currentNode.left) traverse(currentNode.left);
       if (currentNode.right) traverse(currentNode.right);
       results.push(currentNode.value);
@@ -100,12 +110,12 @@ class BST {
     return results;
   }
 
-  DFSInOrder() {
+  DFSInOrder(): number[] {
     let rootNode = this.root;
-    let results = [];
+    let results: number[] = [];
     if (!rootNode) return results;
 
-    const traverse = (currentNode) => {
+    const traverse = (currentNode: Node) => {
       if (currentNode.left) traverse(currentNode.left);
       results.push(currentNode.value);
       if (currentNode.right) traverse(currentNode.right);
@@ -116,44 +126,11 @@ class BST {
   }
 }
 
-// Create your Tree
-let myTree = new BST();
-myTree.insert(47);
-myTree.insert(21);
-myTree.insert(76);
-myTree.insert(18);
-myTree.insert(27);
-myTree.insert(52);
-myTree.insert(82);
-
-function CodeBlock({ code, language }) {
-  const codeRef = useRef(null);
-
-  useEffect(() => {
-    // Wait for the next tick to ensure DOM is ready
-    const timer = setTimeout(() => {
-      if (codeRef.current && window.hljs) {
-        try {
-          window.hljs.highlightElement(codeRef.current);
-        } catch (error) {
-          console.error('Highlight.js error:', error);
-        }
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [code]);
-
-  return (
-    <pre>
-      <code ref={codeRef} className={`hljs ${language}`}>
-        {code}
-      </code>
-    </pre>
-  );
+interface ExplanationProps {
+  algorithm: string;
 }
 
-function Explanation({ algorithm }) {
+function Explanation({ algorithm }: ExplanationProps) {
   const [algorithmName, setAlgorithmName] = useState('');
   const [traverseOrder, setTraverseOrder] = useState('');
   const [explanation, setExplanation] = useState('');
@@ -278,44 +255,48 @@ DFSInOrder() {
   }, [algorithm]);
 
   return (
-    <>
-      <section className="explanation">
-        <div className="instructions">
-          <h3>{algorithmName}</h3>
-          <aside>
-            <p>
-              <span>Traverse Order</span> : {traverseOrder}
-            </p>
-            <p>
-              <span>Explanation</span> : {explanation}
-            </p>
-            <p>
-              <span>Usage</span> : {usage}
-            </p>
-          </aside>
-        </div>
-      </section>
-      <section className="explanation code-container">
-        <CodeBlock code={codeString} language="javascript" />
-      </section>
-    </>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">{algorithmName}</CardTitle>
+          <Badge variant="outline">{traverseOrder}</Badge>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <h4 className="font-semibold mb-2">Explanation</h4>
+            <p className="text-muted-foreground">{explanation}</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Usage</h4>
+            <p className="text-muted-foreground">{usage}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CodeBlock
+        code={codeString}
+        language="javascript"
+        title="Implementation"
+        showLineNumbers={true}
+      />
+    </div>
   );
 }
 
 function App() {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<number[]>([]);
   const [searchType, setSearchType] = useState('');
   const [processingResults, setProcessingResults] = useState(false);
-  const [currentTimeout, setCurrentTimeout] = useState(null); // Track current timeout
-  const [lines, setLines] = useState([]);
-  const containerRef = useRef(null);
-  const oneRef = useRef(null);
-  const twoRef = useRef(null);
-  const threeRef = useRef(null);
-  const fourRef = useRef(null);
-  const fiveRef = useRef(null);
-  const sixRef = useRef(null);
-  const sevenRef = useRef(null);
+  const [currentTimeout, setCurrentTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [lines, setLines] = useState<Array<{ x1: number; y1: number; x2: number; y2: number }>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const oneRef = useRef<HTMLParagraphElement>(null);
+  const twoRef = useRef<HTMLParagraphElement>(null);
+  const threeRef = useRef<HTMLParagraphElement>(null);
+  const fourRef = useRef<HTMLParagraphElement>(null);
+  const fiveRef = useRef<HTMLParagraphElement>(null);
+  const sixRef = useRef<HTMLParagraphElement>(null);
+  const sevenRef = useRef<HTMLParagraphElement>(null);
 
   const cancelCurrentProcess = () => {
     // Clear the current timeout
@@ -347,13 +328,15 @@ function App() {
 
     const containerRect = containerRef.current.getBoundingClientRect();
     const treeElement = containerRef.current.querySelector('.binary-tree');
+    if (!treeElement) return;
+
     const treeRect = treeElement.getBoundingClientRect();
 
     // Calculate the offset of the tree within the container
     const treeOffsetX = treeRect.left - containerRect.left;
     const treeOffsetY = treeRect.top - containerRect.top;
 
-    function getCenter(el) {
+    function getCenter(el: Element) {
       const rect = el.getBoundingClientRect();
       return {
         x: ((rect.left + rect.width / 2 - containerRect.left - treeOffsetX) / treeRect.width) * 100,
@@ -392,7 +375,7 @@ function App() {
     }
   };
 
-  const updateNodes = (results) => {
+  const updateNodes = (results: number[]) => {
     // Cancel any existing process first
     cancelCurrentProcess();
 
@@ -411,7 +394,7 @@ function App() {
       const activeNodeElement = document.querySelector(`p[data-value="${activeNode}"]`);
       const activeResultsElement = document.querySelector(`span[data-value="${activeNode}"]`);
 
-      if (activeNodeElement) {
+      if (activeNodeElement && activeResultsElement) {
         activeNodeElement.classList.add('active');
         activeResultsElement.classList.add('active');
 
@@ -465,9 +448,9 @@ function App() {
 
   useEffect(() => {
     // Initialize highlight.js
-    if (window.hljs) {
+    if ((window as any).hljs) {
       try {
-        window.hljs.highlightAll();
+        (window as any).hljs.highlightAll();
       } catch (error) {
         console.error('App: highlightAll() error:', error);
       }
@@ -475,9 +458,9 @@ function App() {
   }, []);
 
   const scrollToTreeHeading = () => {
-    const treeHeading = document.querySelector('.binary-tree-container h3');
-    if (treeHeading) {
-      treeHeading.scrollIntoView({
+    const treeSection = document.querySelector('.binary-tree-container');
+    if (treeSection) {
+      treeSection.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
@@ -491,15 +474,24 @@ function App() {
     });
   };
 
-  const handleSearchType = (type) => {
+  const handleSearchType = (type: string) => {
     // Allow interruption - cancel current and start new
     if (processingResults) {
       cancelCurrentProcess();
     }
 
     setSearchType(type);
-    setResults(myTree[type]());
-    // Remove the setTimeout - we'll handle scrolling in useEffect
+
+    // Type-safe method calls
+    if (type === 'BFS') {
+      setResults(myTree.BFS());
+    } else if (type === 'DFSPreOrder') {
+      setResults(myTree.DFSPreOrder());
+    } else if (type === 'DFSPostOrder') {
+      setResults(myTree.DFSPostOrder());
+    } else if (type === 'DFSInOrder') {
+      setResults(myTree.DFSInOrder());
+    }
   };
 
   // Add this useEffect to handle scrolling after results render
@@ -518,38 +510,91 @@ function App() {
     scrollToTop();
   };
 
+  // Create your Tree
+  const myTree = new BST();
+  myTree.insert(47);
+  myTree.insert(21);
+  myTree.insert(76);
+  myTree.insert(18);
+  myTree.insert(27);
+  myTree.insert(52);
+  myTree.insert(82);
+
   return (
-    <div className="app">
-      <header>
-        <h1>React Binary Search Tree</h1>
-        <aside>An Exploration of Binary Search Operations</aside>
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border px-6 py-8 text-center">
+        <h1 className="text-4xl font-bold text-foreground mb-2">React Binary Search Tree</h1>
+        <aside className="text-lg text-muted-foreground">
+          An Exploration of Binary Search Operations
+        </aside>
       </header>
-      <main>
-        <div className="content-container">
-          {/* Only show search buttons when no algorithm is running */}
+      <main className="container mx-auto px-6 py-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Only show algorithm cards when no algorithm is running */}
           {!searchType ? (
-            <div className="card color-bg-low">
-              <h2>Show the results of Different Search Algorithms</h2>
-              <div className="button-container">
-                <button onClick={() => handleSearchType('BFS')}>Breadth First Search</button>
-                <button className="accent-high" onClick={() => handleSearchType('DFSPreOrder')}>
-                  Depth First Search - PreOrder
-                </button>
-                <button className="accent" onClick={() => handleSearchType('DFSPostOrder')}>
-                  Depth First Search - PostOrder
-                </button>
-                <button className="accent-low" onClick={() => handleSearchType('DFSInOrder')}>
-                  Depth First Search - InOrder
-                </button>
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold text-center">
+                    Binary Search Tree Algorithms
+                  </CardTitle>
+                  <p className="text-center text-muted-foreground">
+                    Explore different tree traversal algorithms and understand their behavior
+                  </p>
+                </CardHeader>
+              </Card>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
+                <AlgorithmCard
+                  title="Breadth-First Search"
+                  description="Level-order traversal visiting nodes layer by layer from left to right"
+                  difficulty="Beginner"
+                  timeComplexity="O(n)"
+                  spaceComplexity="O(w)"
+                  onExecute={() => handleSearchType('BFS')}
+                  isExecuting={processingResults && searchType === 'BFS'}
+                />
+
+                <AlgorithmCard
+                  title="DFS Pre-Order"
+                  description="Visit root, then left subtree, then right subtree"
+                  difficulty="Beginner"
+                  timeComplexity="O(n)"
+                  spaceComplexity="O(h)"
+                  onExecute={() => handleSearchType('DFSPreOrder')}
+                  isExecuting={processingResults && searchType === 'DFSPreOrder'}
+                />
+
+                <AlgorithmCard
+                  title="DFS Post-Order"
+                  description="Visit left subtree, then right subtree, then root"
+                  difficulty="Intermediate"
+                  timeComplexity="O(n)"
+                  spaceComplexity="O(h)"
+                  onExecute={() => handleSearchType('DFSPostOrder')}
+                  isExecuting={processingResults && searchType === 'DFSPostOrder'}
+                />
+
+                <AlgorithmCard
+                  title="DFS In-Order"
+                  description="Visit left subtree, then root, then right subtree (sorted output for BST)"
+                  difficulty="Beginner"
+                  timeComplexity="O(n)"
+                  spaceComplexity="O(h)"
+                  onExecute={() => handleSearchType('DFSInOrder')}
+                  isExecuting={processingResults && searchType === 'DFSInOrder'}
+                />
               </div>
             </div>
           ) : (
             /* Show current algorithm info instead */
-            <div className="card color-bg-low fit-content">
-              <button onClick={handleReset} className="none">
-                <h2 style={{ marginBottom: 0 }}>{searchType}</h2>
-              </button>
-            </div>
+            <Card className="w-fit mx-auto">
+              <CardContent className="pt-6">
+                <Button onClick={handleReset} variant="ghost" className="p-0">
+                  <h2 className="text-xl font-semibold">{searchType}</h2>
+                </Button>
+              </CardContent>
+            </Card>
           )}
 
           <section className="binary-tree-container" ref={containerRef}>
@@ -600,14 +645,16 @@ function App() {
             </div>
           </section>
           {results.length > 0 ? (
-            <>
-              <section className="card results-container color-bg-high">
-                <div className="results-header">
-                  <h3>Results</h3>
-                  <button onClick={handleReset}>Reset</button>
-                </div>
-                <div className="code-container">
-                  <code>
+            <div className="space-y-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                  <CardTitle>Results</CardTitle>
+                  <Button onClick={handleReset} variant="destructive" size="sm">
+                    Reset
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  <div className="bg-muted p-4 rounded-lg font-mono text-sm">
                     [
                     {results.map((result, index) => (
                       <span key={index} data-value={result} className="result">
@@ -616,25 +663,34 @@ function App() {
                       </span>
                     ))}
                     ]
-                  </code>
-                </div>
-              </section>
+                  </div>
+                </CardContent>
+              </Card>
               {searchType && <Explanation algorithm={searchType} />}
-            </>
+            </div>
           ) : (
-            <section className="instructions" style={{ alignItems: 'center' }}>
-              <aside className="choose-algo">
-                Choose a <span>Search Algorithm</span> to see the results.
-              </aside>
-            </section>
+            <Card>
+              <CardContent className="text-center py-12">
+                <p className="text-lg text-muted-foreground">
+                  Choose a <span className="font-semibold text-primary">Search Algorithm</span> to
+                  see the results.
+                </p>
+              </CardContent>
+            </Card>
           )}
         </div>
       </main>
-      <footer>
-        Lovingly crafted by:{' '}
-        <a href="https://jasontoups.github.io/" target="_blank" rel="noopener noreferrer">
-          Jason Toups
-        </a>
+      <footer className="bg-card border-t border-border px-6 py-6 text-center">
+        <p className="text-muted-foreground">
+          Lovingly crafted by:{' '}
+          <a
+            href="https://jasontoups.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors">
+            Jason Toups
+          </a>
+        </p>
       </footer>
     </div>
   );
