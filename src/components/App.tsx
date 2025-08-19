@@ -327,7 +327,7 @@ function App() {
     if (!containerRef.current) return;
 
     const containerRect = containerRef.current.getBoundingClientRect();
-    const treeElement = containerRef.current.querySelector('.binary-tree');
+    const treeElement = containerRef.current.querySelector('.grid');
     if (!treeElement) return;
 
     const treeRect = treeElement.getBoundingClientRect();
@@ -362,13 +362,13 @@ function App() {
       const seven = getCenter(sevenRef.current);
 
       setLines([
-        // Root connections
+        // Root connections (47 → 21, 47 → 76)
         { x1: one.x, y1: one.y, x2: two.x, y2: two.y },
         { x1: one.x, y1: one.y, x2: three.x, y2: three.y },
-        // Left subtree connections
+        // Left subtree connections (21 → 18, 21 → 27)
         { x1: two.x, y1: two.y, x2: four.x, y2: four.y },
         { x1: two.x, y1: two.y, x2: five.x, y2: five.y },
-        // Right subtree connections
+        // Right subtree connections (76 → 52, 76 → 82)
         { x1: three.x, y1: three.y, x2: six.x, y2: six.y },
         { x1: three.x, y1: three.y, x2: seven.x, y2: seven.y },
       ]);
@@ -629,8 +629,8 @@ function App() {
             </svg>
 
             {/* Tree nodes positioned on top */}
-            <div className="relative grid grid-cols-7 gap-4 items-center justify-center">
-              <div className="col-span-1">
+            <div className="binary-tree-grid">
+              <div className="tree-node root-node">
                 <p
                   className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-semibold text-sm shadow-md transition-all duration-200 hover:scale-110"
                   ref={oneRef}
@@ -638,7 +638,7 @@ function App() {
                   47
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node left-child">
                 <p
                   className="bg-secondary text-secondary-foreground rounded-full w-10 h-10 flex items-center justify-center font-medium text-sm shadow-md transition-all duration-200 hover:scale-110"
                   ref={twoRef}
@@ -646,7 +646,7 @@ function App() {
                   21
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node right-child">
                 <p
                   className="bg-secondary text-secondary-foreground rounded-full w-10 h-10 flex items-center justify-center font-medium text-sm shadow-md transition-all duration-200 hover:scale-110"
                   ref={threeRef}
@@ -654,7 +654,7 @@ function App() {
                   76
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node left-left-grandchild">
                 <p
                   className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
                   ref={fourRef}
@@ -662,7 +662,7 @@ function App() {
                   18
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node left-right-grandchild">
                 <p
                   className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
                   ref={fiveRef}
@@ -670,7 +670,7 @@ function App() {
                   27
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node right-left-grandchild">
                 <p
                   className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
                   ref={sixRef}
@@ -678,7 +678,7 @@ function App() {
                   52
                 </p>
               </div>
-              <div className="col-span-1">
+              <div className="tree-node right-right-grandchild">
                 <p
                   className="bg-muted text-muted-foreground rounded-full w-8 h-8 flex items-center justify-center text-xs shadow-md transition-all duration-200 hover:scale-110"
                   ref={sevenRef}
