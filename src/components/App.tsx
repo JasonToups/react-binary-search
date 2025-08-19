@@ -309,17 +309,17 @@ function App() {
     setProcessingResults(false);
 
     // Clear any active/passive classes from nodes
-    const nodes = document.querySelectorAll('[data-value]');
+    const nodes = document.querySelectorAll('.node');
     nodes.forEach((node) => {
-      node.classList.remove('ring-4', 'ring-primary', 'ring-offset-2', 'ring-offset-background');
-      node.classList.remove('opacity-50');
+      node.classList.remove('active');
+      node.classList.remove('passive');
     });
 
     // Clear any active/passive classes from results
     const results = document.querySelectorAll('.result');
     results.forEach((result) => {
-      result.classList.remove('text-primary', 'font-bold');
-      result.classList.remove('opacity-50');
+      result.classList.remove('active');
+      result.classList.remove('passive');
     });
   };
 

@@ -121,7 +121,18 @@ header aside {
 
 .binary-tree div p.passive {
   background-color: hsl(var(--muted));
-  opacity: 0.5;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Result styling for algorithm execution feedback */
+.result.active {
+  color: hsl(var(--primary));
+  font-weight: bold;
+}
+
+.result.passive {
+  color: hsl(var(--muted-foreground));
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 600px) {
