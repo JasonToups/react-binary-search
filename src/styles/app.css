@@ -76,7 +76,7 @@ header aside {
 }
 
 .tree-svg line {
-  stroke: hsl(var(--border));
+  stroke: var(--color-border);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -102,8 +102,8 @@ header aside {
 }
 
 .binary-tree div p {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border-radius: 999px;
   width: fit-content;
   padding: 1em;
@@ -113,25 +113,25 @@ header aside {
 }
 
 .binary-tree div p.active {
-  background-color: hsl(var(--secondary));
-  border: 10px solid hsl(var(--border));
+  background-color: var(--secondary);
+  border: 10px solid var(--border);
   font-size: clamp(1.5em, 4vw, 2.5em);
   padding: 0.75em;
 }
 
 .binary-tree div p.passive {
-  background-color: hsl(var(--muted));
-  color: hsl(var(--muted-foreground));
+  background-color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 /* Result styling for algorithm execution feedback */
 .result.active {
-  color: hsl(var(--primary));
+  color: var(--primary);
   font-weight: bold;
 }
 
 .result.passive {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   opacity: 0.7;
 }
 
@@ -155,8 +155,8 @@ header aside {
     margin-bottom: 0;
   }
   .binary-tree div p {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background-color: var(--primary);
+    color: var(--primary-foreground);
     border-radius: 999px;
     width: fit-content;
     padding: 0.5em;
@@ -165,8 +165,8 @@ header aside {
   }
 
   .binary-tree div p.active {
-    background-color: hsl(var(--secondary));
-    border: 10px solid hsl(var(--border));
+    background-color: var(--secondary);
+    border: 10px solid var(--border);
     font-size: 1.25em;
     padding: 0.5em;
   }
