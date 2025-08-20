@@ -1,17 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable TypeScript
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  // Enable ESLint
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  // Image optimization
+  output: 'export',
+  trailingSlash: true,
   images: {
-    domains: [],
+    unoptimized: true,
   },
+  basePath: process.env.NODE_ENV === 'production' ? '/react-binary-search' : '',
 };
 
 export default nextConfig;
