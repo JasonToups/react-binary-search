@@ -23,17 +23,6 @@ function BinarySearchTree() {
   const currentAlgorithm = getCurrentAlgorithm();
   const { scrollToTreeHeading, scrollToTop } = useScrollUtils();
 
-  useEffect(() => {
-    // Initialize highlight.js
-    if ((window as any).hljs) {
-      try {
-        (window as any).hljs.highlightAll();
-      } catch (error) {
-        console.error('BinarySearchTree: highlightAll() error:', error);
-      }
-    }
-  }, []);
-
   const handleResetWithScroll = () => {
     handleReset();
     scrollToTop();
