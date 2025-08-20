@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Navbar from './Navbar';
 
 interface Node {
   value: number;
@@ -523,9 +522,6 @@ function App() {
 
   return (
     <div className="app bg-background">
-      {/* Add Navbar at the top */}
-      <Navbar />
-
       <header className="bg-card border-b border-border px-6 py-8 text-center">
         <h1 className="text-4xl font-bold text-foreground mb-2">React Binary Search Tree</h1>
         <aside className="text-lg text-muted-foreground">
