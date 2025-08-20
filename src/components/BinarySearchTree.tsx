@@ -283,7 +283,7 @@ DFSInOrder() {
   );
 }
 
-function App() {
+function BinarySearchTree() {
   const [results, setResults] = useState<number[]>([]);
   const [searchType, setSearchType] = useState('');
   const [processingResults, setProcessingResults] = useState(false);
@@ -452,7 +452,7 @@ function App() {
       try {
         (window as any).hljs.highlightAll();
       } catch (error) {
-        console.error('App: highlightAll() error:', error);
+        console.error('BinarySearchTree: highlightAll() error:', error);
       }
     }
   }, []);
@@ -696,4 +696,4 @@ function App() {
   );
 }
 
-export default App;
+export default BinarySearchTree;
