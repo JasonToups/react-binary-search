@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Moon, Sun, Menu, X } from 'lucide-react';
+import { generateNavItems } from '@/lib/navigation';
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navItems = generateNavItems();
 
   // Check initial theme on mount
   useEffect(() => {
@@ -40,60 +42,30 @@ export default function Navbar() {
         {/* Center: Navigation Menu */}
         <div className="hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-muted-foreground transition duration-200 hover:text-foreground lg:flex lg:space-x-2">
           <nav className="relative flex justify-center space-x-8 rounded-full bg-card px-4 py-3 shadow-sm">
-            <div className="relative group">
-              <Link
-                href="/algorithms"
-                className="cursor-pointer text-muted-foreground hover:text-foreground transition-all duration-200 hover:text-primary">
-                Algorithms
-              </Link>
-              {/* Hover dropdown for Algorithms */}
-              <div className="absolute top-full left-0 mt-2 w-48 bg-card rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="py-2">
-                  <Link
-                    href="/algorithms/binary-search"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    Binary Search
-                  </Link>
-                  <Link
-                    href="/algorithms/binary-tree"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    Binary Tree
-                  </Link>
-                  <Link
-                    href="/algorithms/sorting"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    Sorting Algorithms
-                  </Link>
-                </div>
+            {navItems.map((item) => (
+              <div key={item.href} className="relative group">
+                <Link
+                  href={item.href}
+                  className="cursor-pointer text-muted-foreground hover:text-foreground transition-all duration-200 hover:text-primary">
+                  {item.title}
+                </Link>
+                {/* Hover dropdown for items with children */}
+                {item.children && item.children.length > 0 && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-card rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div className="py-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
+                          {child.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="relative group">
-              <Link
-                href="/react-concepts"
-                className="cursor-pointer text-muted-foreground hover:text-foreground transition-all duration-200 hover:text-primary">
-                React
-              </Link>
-              {/* Hover dropdown for React */}
-              <div className="absolute top-full left-0 mt-2 w-48 bg-card rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="py-2">
-                  <Link
-                    href="/react-concepts/hooks"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    Hooks
-                  </Link>
-                  <Link
-                    href="/react-concepts/state"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    State Management
-                  </Link>
-                  <Link
-                    href="/react-concepts/components"
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-200">
-                    Components
-                  </Link>
-                </div>
-              </div>
-            </div>
+            ))}
           </nav>
         </div>
 
@@ -143,18 +115,15 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="w-full mt-4 py-4 border-t border-border">
             <div className="space-y-3">
-              <Link
-                href="/algorithms"
-                className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}>
-                Algorithms
-              </Link>
-              <Link
-                href="/react-concepts"
-                className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}>
-                React
-              </Link>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg transition-colors duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}>
+                  {item.title}
+                </Link>
+              ))}
               <div className="flex items-center justify-between px-4 py-2">
                 <button
                   onClick={toggleTheme}
