@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CodeBlock } from './CodeBlock';
+import { CodeBlock } from '../react/CodeBlock';
 import { AlgorithmConfig } from '@/lib/bst';
 
 interface AlgorithmExplanationProps {

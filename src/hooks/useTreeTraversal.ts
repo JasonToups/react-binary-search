@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { BST, ALGORITHMS, TREE_DATA } from '@/lib/bst';
 
@@ -8,7 +10,7 @@ export function useTreeTraversal() {
   const [currentTimeout, setCurrentTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Create tree instance
-  const treeRef = useRef<BST>();
+  const treeRef = useRef<BST | undefined>(undefined);
 
   useEffect(() => {
     if (!treeRef.current) {

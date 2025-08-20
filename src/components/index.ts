@@ -1,8 +1,11 @@
-export { default as BinarySearchTree } from './BinarySearchTree';
-export { AlgorithmSelector } from './AlgorithmSelector';
-export { TreeVisualizer } from './TreeVisualizer';
-export { ResultsDisplay } from './ResultsDisplay';
-export { AlgorithmExplanation } from './AlgorithmExplanation';
-export { CurrentAlgorithmHeader } from './CurrentAlgorithmHeader';
-export { AlgorithmCard } from './AlgorithmCard';
-export { CodeBlock } from './CodeBlock';
+// Algorithm components
+export * from './algorithms';
+
+// React concept components
+export * from './react';
+
+// UI components
+export * from './ui';
+
+// Navigation component
+export { default as Navbar } from './Navbar';

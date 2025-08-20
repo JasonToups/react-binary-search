@@ -121,7 +121,7 @@ export interface AlgorithmConfig {
   id: string;
   name: string;
   description: string;
-  difficulty: string;
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   timeComplexity: string;
   spaceComplexity: string;
   traverseOrder: string;
