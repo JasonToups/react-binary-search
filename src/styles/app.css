@@ -1,7 +1,13 @@
+:root {
+  * {
+    box-sizing: border-box;
+  }
+}
 /* App-specific styles */
 .app {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -63,7 +69,6 @@ header aside {
   width: 100%;
   height: 100%;
   min-height: 20rem;
-  margin: 1em 1em 2.5em 1em;
   container-name: tree;
   container-type: inline-size;
 }
@@ -131,8 +136,9 @@ header aside {
 
 /* Result styling for algorithm execution feedback */
 .result.active {
-  color: var(--primary);
+  color: var(--secondary);
   font-weight: bold;
+  font-size: clamp(1em, 3vw, 2em);
 }
 
 .result.passive {
@@ -253,15 +259,6 @@ header aside {
   transition: all 0.3s ease;
 }
 
-.result.active {
-  color: #22c55e;
-  font-weight: bold;
-}
-
-.result.passive {
-  color: #6b7280;
-}
-
 /* Explanation styles */
 .explanation {
   margin-top: 2rem;
@@ -310,7 +307,6 @@ header aside {
 
 /* Footer */
 footer {
-  margin-top: 4rem;
   padding: 2rem 0;
   border-top: 1px solid #e5e7eb;
   color: #6b7280;

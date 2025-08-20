@@ -255,7 +255,7 @@ DFSInOrder() {
   }, [algorithm]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-left">
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">{algorithmName}</CardTitle>
@@ -528,7 +528,7 @@ function App() {
           An Exploration of Binary Search Operations
         </aside>
       </header>
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto pb-6">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Only show algorithm cards when no algorithm is running */}
           {!searchType ? (
@@ -654,7 +654,7 @@ function App() {
                   </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-muted p-4 rounded-lg font-mono text-sm">
+                  <div className="bg-muted p-4 rounded-lg font-mono text-2xl">
                     [
                     {results.map((result, index) => (
                       <span key={index} data-value={result} className="result">
