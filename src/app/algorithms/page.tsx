@@ -1,5 +1,5 @@
-import App from '@/components/App';
+import BinarySearchTree from '@/components/BinarySearchTree';
 
 export default function AlgorithmsPage() {
-  return <App />;
+  return <BinarySearchTree />;
 }

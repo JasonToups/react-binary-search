@@ -1,5 +1,18 @@
 # Navbar
 
+## New Feature - Auto Generate Links to Routes
+
+I would like to create a utility that will automatically generate the NAV bar links to the page structure that we are developing in our next JS project.
+
+This way whenever we create a new page in our router, it will automatically show up on our NAV bar.
+
+Also, I see that we have a /pages folder that's not being used.
+src/pages
+
+If the NextJS default routing uses /src/app let's keep that structure and remove src/pages.
+
+## Description
+
 I Pulled this code structure from @https://pro.aceternity.com/products/navbars
 
 ```html
