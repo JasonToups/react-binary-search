@@ -95,6 +95,7 @@ header aside {
   height: 100%;
   gap: 1em;
   margin-bottom: 2.5em;
+  min-height: 20rem;
   position: relative;
   z-index: 2;
   grid-template-areas:
@@ -213,7 +214,14 @@ header aside {
 
 /* Results container */
 .results-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
   margin-top: 2rem;
+  min-height: 90px;
+  padding: 1rem;
+  line-height: 1;
 }
 
 .results-header {

@@ -654,7 +654,7 @@ function App() {
                   </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-muted p-4 rounded-lg font-mono text-2xl">
+                  <div className="results-container bg-muted p-4 rounded-lg font-mono text-2xl">
                     [
                     {results.map((result, index) => (
                       <span key={index} data-value={result} className="result">

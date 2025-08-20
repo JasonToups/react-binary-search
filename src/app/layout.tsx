@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen">{children}</div>
+        <div className="layout">{children}</div>
       </body>
     </html>
   );
