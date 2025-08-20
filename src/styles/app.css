@@ -23,13 +23,11 @@ header {
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
 header aside {
   font-size: 1.25rem;
-  color: #6b7280;
   font-style: italic;
 }
 
@@ -249,8 +247,8 @@ header aside {
 
 /* Code container */
 .code-container {
-  background: #1f2937;
-  color: #f9fafb;
+  /* background: #1f2937;
+  color: #f9fafb; */
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
