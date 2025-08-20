@@ -41,6 +41,7 @@ pnpm build:gh-pages
 ## 📚 Learning Resources
 
 This project demonstrates:
+
 - Binary Search Tree data structure
 - Tree traversal algorithms
 - React state management
