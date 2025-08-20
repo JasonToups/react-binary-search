@@ -521,7 +521,7 @@ function App() {
   myTree.insert(82);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="app bg-background">
       <header className="bg-card border-b border-border px-6 py-8 text-center">
         <h1 className="text-4xl font-bold text-foreground mb-2">React Binary Search Tree</h1>
         <aside className="text-lg text-muted-foreground">
@@ -589,9 +589,9 @@ function App() {
           ) : (
             /* Show current algorithm info instead */
             <Card className="w-fit mx-auto">
-              <CardContent className="pt-6">
+              <CardContent className="algorithm-header">
                 <Button onClick={handleReset} variant="ghost" className="p-0">
-                  <h2 className="text-xl font-semibold">{searchType}</h2>
+                  <h2 className="text-xl px-3 font-semibold">{searchType}</h2>
                 </Button>
               </CardContent>
             </Card>
