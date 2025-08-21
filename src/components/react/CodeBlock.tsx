@@ -1,101 +1,109 @@
 'use client';
+import React from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
 
-import React, { useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Copy, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-interface CodeBlockProps {
-  code: string;
+type CodeBlockProps = {
   language: string;
+  filename?: string;
   title?: string;
+  highlightLines?: number[];
   showLineNumbers?: boolean;
-  className?: string;
-}
+} & (
+  | {
+      code: string;
+      tabs?: never;
+    }
+  | {
+      code?: never;
+      tabs: Array<{
+        name: string;
+        code: string;
+        language?: string;
+        highlightLines?: number[];
+      }>;
+    }
+);
 
-export function CodeBlock({
-  code,
+export const CodeBlock = ({
   language,
+  filename,
   title,
-  showLineNumbers = false,
-  className,
-}: CodeBlockProps) {
-  const codeRef = useRef<HTMLElement>(null);
+  code,
+  highlightLines = [],
+  showLineNumbers = true,
+  tabs = [],
+}: CodeBlockProps) => {
   const [copied, setCopied] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState(0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (codeRef.current && (window as any).hljs) {
-        try {
-          (window as any).hljs.highlightElement(codeRef.current);
-        } catch (error) {
-          console.error('Highlight.js error:', error);
-        }
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [code]);
+  const tabsExist = tabs.length > 0;
 
   const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
+    const textToCopy = tabsExist ? tabs[activeTab].code : code;
+    if (textToCopy) {
+      await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy code:', err);
     }
   };
 
-  const lines = code.split('\n');
+  const activeCode = tabsExist ? tabs[activeTab].code : code;
+  const activeLanguage = tabsExist ? tabs[activeTab].language || language : language;
+  const activeHighlightLines = tabsExist ? tabs[activeTab].highlightLines || [] : highlightLines;
 
   return (
-    <Card className={cn('w-full', className)}>
-      {title && (
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-base font-medium">{title}</CardTitle>
-          <div className="flex items-center space-x-2">
-            <Badge variant="outline" className="text-xs">
-              {language}
-            </Badge>
-            <Button variant="ghost" size="sm" onClick={copyToClipboard} className="h-8 w-8 p-0">
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-            </Button>
+    <div className="relative w-full rounded-lg bg-slate-900 p-4 font-mono text-sm">
+      <div className="flex flex-col gap-2">
+        {tabsExist && (
+          <div className="flex overflow-x-auto">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveTab(index)}
+                className={`px-3 !py-2 text-xs transition-colors font-sans ${
+                  activeTab === index ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+                }`}>
+                {tab.name}
+              </button>
+            ))}
           </div>
-        </CardHeader>
-      )}
-
-      <CardContent className={title ? 'pt-0' : ''}>
-        <div className="relative">
-          <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-sm">
-            <code
-              ref={codeRef}
-              className={`hljs language-${language} ${showLineNumbers ? 'line-numbers' : ''}`}
-              style={{
-                background: 'transparent',
-                padding: 0,
-              }}>
-              {showLineNumbers
-                ? lines
-                    .map((line, index) => `${(index + 1).toString().padStart(2, ' ')} | ${line}`)
-                    .join('\n')
-                : code}
-            </code>
-          </pre>
-
-          {!title && (
-            <Button
-              variant="ghost"
-              size="sm"
+        )}
+        {!tabsExist && (filename || title) && (
+          <div className="flex justify-between items-center py-2">
+            <div className="text-xs text-zinc-400">{filename || title}</div>
+            <button
               onClick={copyToClipboard}
-              className="absolute right-2 top-2 h-8 w-8 p-0">
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+              className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-sans">
+              {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+            </button>
+          </div>
+        )}
+      </div>
+      <SyntaxHighlighter
+        language={activeLanguage}
+        style={atomDark}
+        customStyle={{
+          margin: 0,
+          padding: 0,
+          background: 'transparent',
+          fontSize: '0.875rem', // text-sm equivalent
+        }}
+        wrapLines={true}
+        showLineNumbers={showLineNumbers}
+        lineProps={(lineNumber) => ({
+          style: {
+            backgroundColor: activeHighlightLines.includes(lineNumber)
+              ? 'rgba(255,255,255,0.1)'
+              : 'transparent',
+            display: 'block',
+            width: '100%',
+          },
+        })}
+        PreTag="div">
+        {String(activeCode)}
+      </SyntaxHighlighter>
+    </div>
   );
-}
+};

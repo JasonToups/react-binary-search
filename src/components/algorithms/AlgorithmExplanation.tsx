@@ -31,7 +31,7 @@ export function AlgorithmExplanation({ algorithm }: AlgorithmExplanationProps) {
       <CodeBlock
         code={algorithm.codeString}
         language="javascript"
-        title="Implementation"
+        filename="Implementation"
         showLineNumbers={true}
       />
     </div>

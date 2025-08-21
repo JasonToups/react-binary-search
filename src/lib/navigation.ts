@@ -42,6 +42,11 @@ export const routes: RouteConfig[] = [
         description: 'React Hooks fundamentals',
       },
       {
+        title: 'Fetching Data',
+        href: '/react-concepts/fetching-data',
+        description: 'Data fetching with useEffect and state management',
+      },
+      {
         title: 'State Management',
         href: '/react-concepts/state',
         description: 'State management patterns',

@@ -23,13 +23,11 @@ header {
 header h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
 header aside {
   font-size: 1.25rem;
-  color: #6b7280;
   font-style: italic;
 }
 
@@ -38,6 +36,11 @@ header aside {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.layout {
+  background: var(--background);
+  color: var(--foreground);
 }
 
 /* Card styles - Now using ShadCN components */
@@ -249,8 +252,8 @@ header aside {
 
 /* Code container */
 .code-container {
-  background: #1f2937;
-  color: #f9fafb;
+  /* background: #1f2937;
+  color: #f9fafb; */
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
@@ -265,6 +268,108 @@ header aside {
 
 .result {
   transition: all 0.3s ease;
+}
+
+/* If you use the GitHub stylesheet, this just tweaks it a bit. */
+
+.markdown-body {
+  color: var(--foreground);
+}
+
+.markdown-body code.inline-code {
+  background: rgba(175, 184, 193, 0.2); /* subtle bg */
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  color: var(--foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  font-size: 0.95em;
+}
+
+/* Make sure block code looks right even when not using the highlighter */
+.markdown-body pre.code-block {
+  background: #0b0f14; /* or inherit from your theme */
+  padding: 1em;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+/* Avoid double padding when a highlighter already set styles */
+.markdown-body pre > code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-body .mermaid {
+  margin: 1em 0;
+  display: block;
+  overflow-x: auto;
+  text-align: center;
+}
+
+/* Enhanced Mermaid chart styling */
+.mermaid {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--background);
+  border-radius: 12px;
+  overflow-x: auto;
+  transition: all 0.2s ease-in-out;
+}
+
+.mermaid:hover {
+  transform: translateY(-1px);
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mermaid uses built-in theme support via config, no need for custom theme classes */
+
+/* Mermaid loading state */
+.mermaid-loading {
+  margin: 2rem 0;
+}
+
+.mermaid-loading .animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Mermaid chart container for better spacing */
+.mermaid-container {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.mermaid-container .mermaid {
+  margin: 0;
+}
+
+/* Responsive Mermaid charts */
+@media (max-width: 768px) {
+  .mermaid {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+  }
+
+  .mermaid svg {
+    font-size: 12px;
+  }
 }
 
 /* Explanation styles */
