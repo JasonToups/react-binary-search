@@ -18,7 +18,7 @@ We need to be able to render the markdown from 2 markdown files. concept.md and 
 
 ## Required Packages
 
-1. Core Markdown Rendering
+### 1. Core Markdown Rendering
 
 react-markdown
 Main library for rendering Markdown content in React.
@@ -27,7 +27,7 @@ Main library for rendering Markdown content in React.
 npm install react-markdown
 ```
 
-2. GitHub-Flavored Markdown (Tables, Strikethrough, Task Lists)
+### 2. GitHub-Flavored Markdown (Tables, Strikethrough, Task Lists)
 
 remark-gfm
 Adds GFM (GitHub Flavored Markdown) support to react-markdown.
@@ -45,7 +45,7 @@ import remarkGfm from 'remark-gfm';
 <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
 ```
 
-3. Syntax Highlighting for Code Blocks
+### 3. Syntax Highlighting for Code Blocks
 
 Option A — Recommended (Shiki via rehype-pretty-code)
 
@@ -81,7 +81,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 </ReactMarkdown>;
 ```
 
-4. Mermaid Diagram Rendering
+### 4. Mermaid Diagram Rendering
 
 mermaid — Core Mermaid library
 react-mermaid2 — React wrapper for Mermaid
@@ -113,7 +113,7 @@ function MarkdownRenderer({ content }) {
 }
 ```
 
-5. (Optional but Recommended) Styling
+### 5. (Optional but Recommended) Styling
 
 If you want a GitHub-style look, install:
 
@@ -131,7 +131,7 @@ function App() {
 }
 ```
 
-📜 Final Install Command
+### 📜 Final Install Command
 
 If you want everything at once:
 
