@@ -19,10 +19,21 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
         const raw = String(children ?? '');
         const match = /language-(\w+)/.exec(className || '');
 
-        // Inline code
-        if (inline) {
+        // 1) INLINE CODE: Check multiple conditions for inline code
+        const isInline =
+          inline ||
+          // Check if it's a single line without newlines and not a language block
+          (!match && raw.trim().split('\n').length === 1 && raw.trim().length < 100) ||
+          // Check if the node indicates it's inline
+          node?.type === 'inlineCode' ||
+          // Check if className suggests inline
+          className?.includes('inline') ||
+          // Check if it's a simple word/phrase without complex formatting
+          (raw.trim().length < 50 && !raw.includes('\n') && !raw.includes('```'));
+
+        if (isInline) {
           return (
-            <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+            <code className={`inline-code ${className || ''}`} {...props}>
               {children}
             </code>
           );
@@ -40,22 +51,23 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
           );
         }
 
-        // Fenced code blocks with language
+        // Fenced code blocks with language - use SyntaxHighlighter
         if (match) {
           return (
             <SyntaxHighlighter
               style={oneDark}
               language={match[1]}
-              PreTag="div"
+              PreTag="pre"
+              CodeTag="code"
               children={raw.replace(/\n$/, '')}
               {...props}
             />
           );
         }
 
-        // Fallback for code blocks without language
+        // Fallback for code blocks without language - use SyntaxHighlighter
         return (
-          <SyntaxHighlighter style={oneDark} PreTag="div" {...props}>
+          <SyntaxHighlighter style={oneDark} PreTag="pre" CodeTag="code" {...props}>
             {raw.replace(/\n$/, '')}
           </SyntaxHighlighter>
         );
@@ -78,12 +90,35 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
         </h3>
       ),
 
-      // Custom paragraph styles
-      p: ({ children, ...props }: any) => (
-        <p className="mb-4 text-muted-foreground leading-relaxed" {...props}>
-          {children}
-        </p>
-      ),
+      // Custom paragraph styles - completely exclude any block-level elements
+      p: ({ children, ...props }: any) => {
+        // Check if this paragraph contains any block-level elements that shouldn't be in p tags
+        const hasBlockElements = React.Children.toArray(children).some((child: any) => {
+          // Check for code blocks, pre tags, div tags, or other block elements
+          return (
+            child?.type === 'code' ||
+            child?.props?.node?.tagName === 'code' ||
+            child?.type === 'pre' ||
+            child?.props?.node?.tagName === 'pre' ||
+            child?.type === 'div' ||
+            child?.props?.node?.tagName === 'div' ||
+            // Check if it's a SyntaxHighlighter component
+            child?.type?.displayName === 'SyntaxHighlighter' ||
+            child?.props?.className?.includes('react-syntax-highlighter')
+          );
+        });
+
+        // If it contains block elements, don't wrap in p tag
+        if (hasBlockElements) {
+          return <>{children}</>;
+        }
+
+        return (
+          <p className="mb-4 text-muted-foreground leading-relaxed" {...props}>
+            {children}
+          </p>
+        );
+      },
 
       // Custom list styles
       ul: ({ children, ...props }: any) => (
@@ -138,7 +173,11 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
 
     return (
       <div className={`prose prose-slate max-w-none ${className}`}>
-        <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown
+          components={components}
+          remarkPlugins={[remarkGfm]}
+          // Use rehype plugins to ensure proper HTML structure
+          rehypePlugins={[]}>
           {content}
         </ReactMarkdown>
       </div>

@@ -265,6 +265,30 @@ header aside {
   transition: all 0.3s ease;
 }
 
+/* If you use the GitHub stylesheet, this just tweaks it a bit. */
+.markdown-body code.inline-code {
+  background: rgba(175, 184, 193, 0.2); /* subtle bg */
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  font-size: 0.95em;
+}
+
+/* Make sure block code looks right even when not using the highlighter */
+.markdown-body pre.code-block {
+  background: #0b0f14; /* or inherit from your theme */
+  padding: 1em;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+/* Avoid double padding when a highlighter already set styles */
+.markdown-body pre > code {
+  background: transparent;
+  padding: 0;
+}
+
 /* Explanation styles */
 .explanation {
   margin-top: 2rem;
