@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { ClientOnlyMermaid } from './ClientOnlyMermaid';
+import { MermaidChart } from './MermaidChart';
 
 interface MarkdownComponentProps {
   content: string;
@@ -49,7 +49,7 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
 
         // Mermaid charts: ```mermaid
         if (!inline && match?.[1]?.toLowerCase() === 'mermaid') {
-          return <ClientOnlyMermaid chart={raw.trim()} />;
+          return <MermaidChart chart={raw.trim()} />;
         }
 
         // Fenced code blocks with language - use SyntaxHighlighter
@@ -107,8 +107,8 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
             child?.type?.displayName === 'SyntaxHighlighter' ||
             child?.props?.className?.includes('react-syntax-highlighter') ||
             // Check if it's a Mermaid component
-            child?.type === ClientOnlyMermaid ||
-            child?.type?.displayName === 'ClientOnlyMermaid'
+            child?.type === MermaidChart ||
+            child?.type?.displayName === 'MermaidChart'
           );
         });
 
@@ -176,7 +176,7 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
     };
 
     return (
-      <div className={`prose prose-slate max-w-none ${className}`}>
+      <div className={`prose prose-slate max-w-none markdown-body ${className}`}>
         <ReactMarkdown
           components={components}
           remarkPlugins={[remarkGfm]}

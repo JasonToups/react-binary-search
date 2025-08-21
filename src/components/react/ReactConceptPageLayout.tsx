@@ -18,9 +18,9 @@ export function ReactConceptPageLayout({
   furtherExploration,
 }: ReactConceptPageLayoutProps) {
   return (
-    <div className="container mx-auto px-6 py-8 max-w-6xl">
+    <div className="container bg-card text-foreground mx-auto px-6 py-8 max-w-6xl">
       {/* Header Section */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-1 bg-card text-foreground border border-border rounded-lg p-6">
         <h1 className="text-4xl font-bold mb-4 text-foreground">{title}</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">{description}</p>
       </div>

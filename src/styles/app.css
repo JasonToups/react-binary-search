@@ -38,6 +38,11 @@ header aside {
   gap: 2rem;
 }
 
+.layout {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 /* Card styles - Now using ShadCN components */
 
 /* Button styles - Now using ShadCN components */
@@ -266,10 +271,16 @@ header aside {
 }
 
 /* If you use the GitHub stylesheet, this just tweaks it a bit. */
+
+.markdown-body {
+  color: var(--foreground);
+}
+
 .markdown-body code.inline-code {
   background: rgba(175, 184, 193, 0.2); /* subtle bg */
   padding: 0.15em 0.35em;
   border-radius: 4px;
+  color: var(--foreground);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
   font-size: 0.95em;

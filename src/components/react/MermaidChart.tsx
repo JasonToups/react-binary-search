@@ -12,11 +12,11 @@ const Mermaid = dynamic(() => import('react-mermaid2'), {
   ),
 });
 
-interface ClientOnlyMermaidProps {
+interface MermaidChartProps {
   chart: string;
 }
 
-export const ClientOnlyMermaid: React.FC<ClientOnlyMermaidProps> = ({ chart }) => {
+export const MermaidChart: React.FC<MermaidChartProps> = ({ chart }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
