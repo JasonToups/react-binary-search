@@ -1,9 +1,10 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { ClientOnlyMermaid } from './ClientOnlyMermaid';
 
 interface MarkdownComponentProps {
   content: string;
@@ -12,6 +13,13 @@ interface MarkdownComponentProps {
 
 export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
   ({ content, className = '' }) => {
+    const [isClient, setIsClient] = useState(false);
+
+    // Only run on client
+    useEffect(() => {
+      setIsClient(true);
+    }, []);
+
     // Custom components for react-markdown
     const components = {
       // Override code blocks to use proper syntax highlighting
@@ -39,16 +47,9 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
           );
         }
 
-        // Mermaid charts
-        if (match?.[1]?.toLowerCase() === 'mermaid') {
-          return (
-            <div className="my-6 p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-2">Mermaid Chart</div>
-              <div className="mermaid" key={Math.random()}>
-                {raw.trim()}
-              </div>
-            </div>
-          );
+        // Mermaid charts: ```mermaid
+        if (!inline && match?.[1]?.toLowerCase() === 'mermaid') {
+          return <ClientOnlyMermaid chart={raw.trim()} />;
         }
 
         // Fenced code blocks with language - use SyntaxHighlighter
@@ -104,7 +105,10 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = memo(
             child?.props?.node?.tagName === 'div' ||
             // Check if it's a SyntaxHighlighter component
             child?.type?.displayName === 'SyntaxHighlighter' ||
-            child?.props?.className?.includes('react-syntax-highlighter')
+            child?.props?.className?.includes('react-syntax-highlighter') ||
+            // Check if it's a Mermaid component
+            child?.type === ClientOnlyMermaid ||
+            child?.type?.displayName === 'ClientOnlyMermaid'
           );
         });
 

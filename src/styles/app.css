@@ -289,6 +289,78 @@ header aside {
   padding: 0;
 }
 
+.markdown-body .mermaid {
+  margin: 1em 0;
+  display: block;
+  overflow-x: auto;
+  text-align: center;
+}
+
+/* Enhanced Mermaid chart styling */
+.mermaid {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--background);
+  border-radius: 12px;
+  overflow-x: auto;
+  transition: all 0.2s ease-in-out;
+}
+
+.mermaid:hover {
+  transform: translateY(-1px);
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mermaid uses built-in theme support via config, no need for custom theme classes */
+
+/* Mermaid loading state */
+.mermaid-loading {
+  margin: 2rem 0;
+}
+
+.mermaid-loading .animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Mermaid chart container for better spacing */
+.mermaid-container {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.mermaid-container .mermaid {
+  margin: 0;
+}
+
+/* Responsive Mermaid charts */
+@media (max-width: 768px) {
+  .mermaid {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+  }
+
+  .mermaid svg {
+    font-size: 12px;
+  }
+}
+
 /* Explanation styles */
 .explanation {
   margin-top: 2rem;
