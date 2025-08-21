@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clean": "rm -rf node_modules .next",
+    "clean": "rm -rf node_modules .next out",
     "clean:install": "pnpm clean && pnpm install"
   },
   "dependencies": {
