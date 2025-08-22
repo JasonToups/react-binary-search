@@ -77,3 +77,4 @@ turbo
 # === Optional: Lint Cache ===
 .eslintcache
 stylelint.cache
+out
