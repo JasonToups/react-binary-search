@@ -1,26 +1,37 @@
+# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [main] # or your default branch
+    branches: [main] # adjust if needed
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      # Install pnpm matching your local version (adjust if needed)
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: 'pnpm'
 
-      - run: npm ci
-      - run: npm run build
+      - run: pnpm install --frozen-lockfile
 
-      # Ensure GitHub Pages doesn’t Jekyll-process the _next folder
+      # Build the static export (Next 15 + our next.config.mjs)
+      - run: pnpm run build
+
+      # Ensure _next isn’t mangled by Jekyll on Pages
       - run: touch out/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
