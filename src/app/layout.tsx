@@ -26,23 +26,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-          {`
-            mermaid.initialize({ 
-              startOnLoad: true,
-              theme: 'default',
-              flowchart: { useMaxWidth: true }
-            });
-          `}
-        </script>
       </head>
       <body className={inter.className}>
         <div className="layout">
           <Navbar />
           {children}
         </div>
+        
+        {/* Load external scripts for static export compatibility */}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            // Initialize highlight.js
+            if (typeof hljs !== 'undefined') {
+              hljs.highlightAll();
+            }
+            
+            // Initialize mermaid
+            if (typeof mermaid !== 'undefined') {
+              mermaid.initialize({ 
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: { useMaxWidth: true }
+              });
+            }
+          `
+        }} />
       </body>
     </html>
   );

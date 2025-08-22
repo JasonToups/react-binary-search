@@ -50,14 +50,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build with Next.js
-        run: pnpm build
+        run: pnpm build:static
         env:
           CI: true
+          NODE_ENV: production
 
       - name: Verify build output
         run: |
           ls -la out/
           echo "Build completed successfully"
+          echo "Checking for _next directory:"
+          ls -la out/_next/ || echo "No _next directory found (this is expected for static export)"
+          echo "Checking for .nojekyll file:"
+          ls -la out/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
