@@ -1,41 +1,27 @@
+// next.config.mjs
+const isGhActions = process.env.GITHUB_ACTIONS === 'true';
+let repo = '';
+
+if (isGhActions && process.env.GITHUB_REPOSITORY) {
+  repo = process.env.GITHUB_REPOSITORY.split('/')[1]; // "JasonToups/react-binary-search" -> "react-binary-search"
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'export', // write static site to ./out
   trailingSlash: true,
-  distDir: 'out',
-  images: {
-    unoptimized: true,
-  },
-  // Ensure all assets are properly handled
-  assetPrefix: '',
-  webpack: (config, { isServer, dev }) => {
-    // Handle markdown files
+  images: { unoptimized: true },
+
+  // Serve from sub-path on GitHub Pages
+  basePath: isGhActions ? `/${repo}` : '',
+  assetPrefix: isGhActions ? `/${repo}/` : '',
+
+  // Minimal rule: import .md files as raw strings
+  webpack: (config) => {
     config.module.rules.push({
-      test: /\.md$/,
-      use: 'raw-loader',
+      test: /\.md$/i,
+      type: 'asset/source', // Webpack 5: returns file contents as a string
     });
-
-    // Optimize for static export
-    if (!isServer && !dev) {
-      // Completely disable code splitting
-      config.optimization.splitChunks = false;
-      config.optimization.runtimeChunk = false;
-
-      // Force single entry point
-      if (Array.isArray(config.entry)) {
-        config.entry = config.entry[0];
-      }
-
-      // Override output to force single file
-      config.output.filename = 'static/js/[name].js';
-      config.output.chunkFilename = 'static/js/[name].js';
-
-      // Disable dynamic imports
-      config.plugins = config.plugins.filter((plugin) => {
-        return plugin.constructor.name !== 'ChunkRenamePlugin';
-      });
-    }
-
     return config;
   },
 };
