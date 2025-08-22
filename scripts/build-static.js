@@ -22,17 +22,19 @@ if (!fs.existsSync(nojekyllPath)) {
 const nextDir = path.join(outDir, '_next');
 if (fs.existsSync(nextDir)) {
   console.log('📁 Found _next directory, checking structure...');
-  
+
   // List all chunks
   const chunksDir = path.join(nextDir, 'static', 'chunks');
   if (fs.existsSync(chunksDir)) {
     const chunks = fs.readdirSync(chunksDir);
     console.log(`📦 Found ${chunks.length} chunk files:`, chunks);
-    
+
     // Check for main chunks
-    const mainChunks = chunks.filter(chunk => chunk.startsWith('main'));
+    const mainChunks = chunks.filter((chunk) => chunk.startsWith('main'));
     if (mainChunks.length > 1) {
-      console.log('⚠️  Multiple main chunks detected - this may cause loading issues on GitHub Pages');
+      console.log(
+        '⚠️  Multiple main chunks detected - this may cause loading issues on GitHub Pages'
+      );
     }
   }
 }
@@ -44,18 +46,18 @@ console.log('🔧 Fixing asset paths for GitHub Pages...');
 function findHtmlFiles(dir) {
   const files = [];
   const items = fs.readdirSync(dir);
-  
+
   for (const item of items) {
     const fullPath = path.join(dir, item);
     const stat = fs.statSync(fullPath);
-    
+
     if (stat.isDirectory()) {
       files.push(...findHtmlFiles(fullPath));
     } else if (item.endsWith('.html')) {
       files.push(fullPath);
     }
   }
-  
+
   return files;
 }
 
@@ -66,16 +68,16 @@ console.log(`📄 Found ${htmlFiles.length} HTML files to process`);
 // Process each HTML file
 for (const htmlFile of htmlFiles) {
   console.log(`🔧 Processing: ${path.relative(outDir, htmlFile)}`);
-  
+
   let content = fs.readFileSync(htmlFile, 'utf8');
-  
+
   // Fix _next paths to be relative
   content = content.replace(/\/_next\//g, './_next/');
-  
+
   // Fix any remaining absolute paths
   content = content.replace(/href="\//g, 'href="./');
   content = content.replace(/src="\//g, 'src="./');
-  
+
   // Write the fixed content back
   fs.writeFileSync(htmlFile, content);
 }

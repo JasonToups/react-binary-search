@@ -32,12 +32,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
         </div>
-        
+
         {/* Load external scripts for static export compatibility */}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script dangerouslySetInnerHTML={{
-          __html: `
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
             // Initialize highlight.js
             if (typeof hljs !== 'undefined') {
               hljs.highlightAll();
@@ -51,8 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 flowchart: { useMaxWidth: true }
               });
             }
-          `
-        }} />
+          `,
+          }}
+        />
       </body>
     </html>
   );
